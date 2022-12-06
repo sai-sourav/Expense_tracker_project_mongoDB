@@ -61,7 +61,7 @@ exports.usersignin = async (req, res, next) => {
                     pswd : true
                 })
             } else{
-                res.status(404).json({
+                res.status(401).json({
                     email : true,
                     pswd : false
                 });
