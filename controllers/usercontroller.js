@@ -36,5 +36,45 @@ exports.usersignup = async (req, res, next) => {
            });
         }
     }
+}
 
+exports.usersignin = async (req, res, next) => {
+    try{
+        const emailid = req.body.emailid;
+        const pswd = req.body.pswd;
+        let search_email = await User.findAll({
+            where: {
+                emailid: emailid
+            }
+        });
+        search_email = search_email[0];
+        
+        if(!search_email){
+            res.status(404).json({
+                email : false,
+                pswd : false
+            });
+        }else {
+            if(search_email.password === pswd){
+                res.status(200).json({
+                    email : true,
+                    pswd : true
+                })
+            } else{
+                res.status(404).json({
+                    email : true,
+                    pswd : false
+                });
+            }
+        }
+
+    }catch(err) {
+        if(err) {
+           res.status(500).json({
+            found : false,
+            created : false,
+            error : err
+           });
+        }
+    }
 }
