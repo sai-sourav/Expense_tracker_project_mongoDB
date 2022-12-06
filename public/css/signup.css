@@ -5,7 +5,7 @@ body {
     font-family: "poppins", sans-serif;
     margin: 0;
     min-height: 110vh;
-    background-image: url('/public/images/signup/alexander-mils-lCPhGxs7pww-unsplash.jpg');
+    background-image: url('../images/signup/alexander-mils-lCPhGxs7pww-unsplash.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -92,4 +92,52 @@ input {
     width: 290px;
     height: 30px;
     border-radius: 10px;
+}
+
+#exists {
+    font-family: inherit;
+    color: red;
+    /* left:  */
+}
+
+.popup-container {
+    background: rgba(148, 194, 207, 0.5);
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-container.active {
+    display: flex;
+}
+
+.popup {
+    background-color: azure;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+    padding: 2.5rem;
+    position: relative;
+    text-align: center;
+    width: 250px;
+}
+
+#close {
+    background-color: rebeccapurple;
+    cursor: pointer;
+    user-select: none;
+    /* position: absolute; */
+    color: white;
+    font-family: inherit;
+    left: 130px;
+    font-size: 15px;
+    padding: 0.5rem;
+    width: 50px;
+    border-radius: 10px;
+    border-color: black;
 }

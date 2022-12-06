@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/signup.css">
+    <link rel="stylesheet" href="../css/signup.css">
     <title>Signup</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="../js/user.js" defer></script>
 </head>
 <body>
     <div id="title">
@@ -15,16 +17,24 @@
     <fieldset>
         <h2>Sign Up</h2>
         <h3>It's quick and easy.</h3>
+        <p id="exists"></p>
         <form id="signup" class="signup-form">
             <label for="name">Full name:</label><br>
             <input type="text" placeholder="Enter your name" id="name" required><br><br>
             <label for="email">Email id:</label><br>
-            <input type="text" placeholder="Enter your email" id="name" required><br><br>
+            <input type="text" placeholder="Enter your email" id="email" required><br><br>
             <label for="pswd">Password:</label><br>
             <input type="password" placeholder="Enter your Password" id="pswd" required><br><br>
             <button id="signupbtn" class="signup-btn">Sign Up</button><br><br>
-            <a href="../html/signin.html">Existing User-Login</a>
+            <a href="./signin.html">Existing User-Login</a>
         </form>
     </fieldset>
+    <div class="popup-container" id="container">
+        <div class="popup">
+           <p>Account created Successfully</p>
+           <p>Please login to continue</p>
+           <button id="close">OK</button>
+        </div>
+    </div>
 </body>
 </html>
