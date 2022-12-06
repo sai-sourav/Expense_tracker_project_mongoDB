@@ -20,15 +20,16 @@ signinbtn.addEventListener("click", async (e) => {
         }
         
     }catch(err){
-
-        if(err.response.data.email === false){ 
-            message.innerText = "❌ Wrong Email entered";
-        }
-        else if(err.response.data.pswd === false){
-            message.innerText = "❌ Wrong Password entered";
+        if(err.response.status !== 500){
+            if(err.response.data.email === false){ 
+                message.innerText = "❌ Wrong Email entered";
+            }
+            else if(err.response.data.pswd === false){
+                message.innerText = "❌ Wrong Password entered";
+            }
         }
         else{
-        message.innerText = "❌ Network error";
+            message.innerText = "❌ Network error";
         }
     }
 });

@@ -1,5 +1,6 @@
 const User = require('../models/user');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 exports.usersignup = async (req, res, next) => {
     try{
         const name = req.body.name;
@@ -12,14 +13,16 @@ exports.usersignup = async (req, res, next) => {
         });
         search = search[0];
         if(!search){
-            const response = await User.create({
-                name : name,
-                emailid : emailid,
-                password : pswd
-            });
-            res.status(201).json({
-                found : false,
-                created : true
+            bcrypt.hash(pswd, saltRounds, async(err,hash) => {
+                const response = await User.create({
+                    name : name,
+                    emailid : emailid,
+                    password : hash
+                });
+                res.status(201).json({
+                    found : false,
+                    created : true
+                });
             });
         }else{
             res.status(200).json({
@@ -55,24 +58,30 @@ exports.usersignin = async (req, res, next) => {
                 pswd : false
             });
         }else {
-            if(search_email.password === pswd){
-                res.status(200).json({
-                    email : true,
-                    pswd : true
-                })
-            } else{
-                res.status(401).json({
-                    email : true,
-                    pswd : false
-                });
-            }
+            bcrypt.compare(pswd, search_email.password, async (err,result) => {
+                if(err){
+                    throw new Error("something went wrong");
+                }
+                else{
+                    if(result === true){
+                        res.status(200).json({
+                            email : true,
+                            pswd : true
+                        })
+                    }
+                    else {
+                        res.status(401).json({
+                            email : true,
+                            pswd : false
+                        });
+                    }
+                }
+            })
         }
 
     }catch(err) {
         if(err) {
            res.status(500).json({
-            found : false,
-            created : false,
             error : err
            });
         }
