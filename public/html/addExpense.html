@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/expense.css">
+    <title>Expenses</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="../js/addexpense.js" defer></script>
+</head>
+<body>
+    <div id="title">
+        <h1>Expense Tracker</h1>
+        <h3>Track your expenses -Anywhere -Anytime.</h3>
+    </div>
+    <div class="list-main-container" id="container">
+        <button id="addexpensebtn" class="add-expense-btn">✙ Add Expense</button>
+        <div id="expenses-list" class="list-sub-container">
+            <!-- <div id = "1" class="expense-item">
+                <h3 class="showamount">Amount spent: $200</h3>
+                <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                <h3 class="showcat">Category: Movie</h3>
+                <button class="delete-expense-button" type='button'>Delete Expense</button>
+            </div>
+            <br>
+            <div id = "1" class="expense-item">
+                <h3 class="showamount">Amount spent: $200</h3>
+                <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                <h3 class="showcat">Category: Movie</h3>
+                <button class="delete-expense-button" type='button'>Delete Expense</button>
+            </div> -->
+        </div>
+    </div>
+    <br>
+    <div class="popup-container" id="popup-container">
+        <div class="popup">
+            <fieldset>
+                <button id="close">X</button>
+                <h2>Expense Details</h2><br>
+                <p id="exists"></p>
+                <form id="addexpense" class="addExpense-form">
+                    <label for="amount">Full amount:</label><br>
+                    <input type="number" placeholder="eg:- 2000" id="amount" required><br><br>
+                    <label for="desc">Description:</label><br>
+                    <textarea id="desc" form="addexpense" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
+                    <label for="category">Category:</label><br>
+                        <select id="category" required>
+                            <option value="Fuel">Fuel</option>
+                            <option value="Movie">Movie</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Food">Food</option>
+                        </select><br><br>
+                    <button id="saveexpense" class="saveexpense-btn">Save</button>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</body>
+</html>

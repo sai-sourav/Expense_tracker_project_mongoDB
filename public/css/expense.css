@@ -1,0 +1,282 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "poppins", sans-serif;
+    margin: 0;
+    /* min-height: 120vh; */
+    background-image: url('../images/signup/alexander-mils-lCPhGxs7pww-unsplash.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+body h1{
+    position: fixed;
+    top: 0.5px;
+    font-family: 'Courier New', monospace;
+    color: whitesmoke;
+    font-size: 400%;
+}
+
+fieldset h2{
+    position: absolute;
+    top: 10px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    font-size: 25px;
+}
+
+#title h3 {
+    position: fixed;
+    left: 550px;
+    font-family: 'Courier New', monospace;
+    color: whitesmoke;
+    top: 110px;
+}
+
+#title h1 {
+    top: 0.5px;
+    left: 470px;
+    position: fixed;
+    font-family: 'Courier New', monospace;
+    color: whitesmoke;
+}
+
+#category {
+    width: 298px;
+    height: 35px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 20px;
+}
+
+option {
+    font-family: inherit;
+    font-size: 20px;
+}
+
+fieldset {
+    background-color: whitesmoke;
+    border-radius: 30px;
+    padding: 45px;
+    position: relative;
+}
+
+form {
+    position: relative;
+}
+
+.add-expense-btn {
+    background-color: green;
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    color: white;
+    font-family: inherit;
+    top: 10px;
+    left: 10px;
+    width: 150px;
+    font-size: 15px;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: none;
+}
+.saveexpense-btn {
+    background-color: rebeccapurple;
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    color: white;
+    font-family: inherit;
+    left: 75px;
+    font-size: 20px;
+    padding: 0.5rem;
+    width: 150px;
+    border-radius: 10px;
+    border: none;
+}
+
+.saveexpense-btn:hover {
+    background-color: purple;
+    color:aqua;
+}
+
+.add-expense-btn:hover {
+    background-color: rgb(169, 175, 60);
+    color:whitesmoke
+}
+
+#addExpense a:hover {
+    background-color: rgb(5, 140, 5);
+    color:aqua;
+}
+
+#addExpense a {
+    text-decoration: none;
+    display: block;
+    width: 140px;
+    height: 15px;
+    background: green;
+    margin-top: 20px;
+    padding: 7px;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    line-height: 15px;
+}
+
+label {
+    font-family: inherit;
+}
+
+input {
+    width: 290px;
+    height: 30px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 20px;
+}
+
+textarea {
+    width: 290px;
+    height: 100px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 20px;
+    resize: none;
+}
+
+#networkerror {
+    font-size: x-large;
+}
+
+#noexpenses {
+    position : relative;
+    text-align: center;
+    top: 100px;
+    font-size: x-large;
+    justify-content: center;
+}
+
+#exists {
+    font-family: inherit;
+    color: green;
+    /* left:  */
+}
+
+.list-main-container {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+    padding: 2.5rem;
+    position: fixed;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 60%;
+    top: 180px;
+}
+
+.list-sub-container {
+    background-color: rgb(227, 217, 196);
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+    position: fixed;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 60%;
+    top: 250px;
+}
+
+.expense-item {
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem;
+    position: relative;
+    height: 80px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.delete-expense-button {
+    background-color: rgb(200, 22, 51);
+    cursor: pointer;
+    color: white;
+    border:2px solid #56CCF2;
+    border-radius: 7px;
+    padding:6px 10px;
+    position: absolute;
+    right: 4%;
+}
+
+.delete-expense-button:hover {
+    background-color: rgb(245, 10, 10);
+    color: white;
+}
+
+.showamount {
+    font-family: inherit;
+    font-size: 15px;
+    left: 5%;
+    top: 5px;
+    position: absolute;
+}
+
+.showdesc {
+    font-family: inherit;
+    font-size: 15px;
+    top: 25px;
+    left: 5%;
+    position: absolute;
+}
+
+.showcat {
+    font-family: inherit;
+    font-size: 15px;
+    top: 45px;
+    left: 5%;
+    position: absolute;
+}
+
+.popup-container {
+    background: rgba(148, 194, 207, 0.5);
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-container.active {
+    display: flex;
+}
+
+.popup {
+    position: relative;
+    width: 250px;
+}
+
+#close {
+    background-color: whitesmoke;
+    cursor: pointer;
+    user-select: none;
+    color: red;
+    font-family: inherit;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 30px;
+    border: none;
+}

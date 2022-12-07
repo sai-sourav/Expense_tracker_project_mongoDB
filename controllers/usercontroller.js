@@ -6,6 +6,9 @@ exports.usersignup = async (req, res, next) => {
         const name = req.body.name;
         const emailid = req.body.emailid;
         const pswd = req.body.pswd;
+        if((name === "") || (emailid === "") || (pswd === "")){
+            return res.status(500).json({fields : "empty"});
+        }
         let search = await User.findAll({
             where: {
                 emailid: emailid
@@ -45,20 +48,23 @@ exports.usersignin = async (req, res, next) => {
     try{
         const emailid = req.body.emailid;
         const pswd = req.body.pswd;
-        let search_email = await User.findAll({
+        if((emailid === "") || (pswd === "")){
+            return res.status(500).json({fields : "empty"});
+        }
+        let search = await User.findAll({
             where: {
                 emailid: emailid
             }
         });
-        search_email = search_email[0];
+        search = search[0];
         
-        if(!search_email){
+        if(!search){
             res.status(404).json({
                 email : false,
                 pswd : false
             });
         }else {
-            bcrypt.compare(pswd, search_email.password, async (err,result) => {
+            bcrypt.compare(pswd, search.password, async (err,result) => {
                 if(err){
                     throw new Error("something went wrong");
                 }
@@ -66,7 +72,8 @@ exports.usersignin = async (req, res, next) => {
                     if(result === true){
                         res.status(200).json({
                             email : true,
-                            pswd : true
+                            pswd : true,
+                            userid : search.id
                         })
                     }
                     else {

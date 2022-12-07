@@ -16,7 +16,9 @@ signinbtn.addEventListener("click", async (e) => {
         if(response.data.email === true && response.data.pswd === true){
             document.getElementById('email').value = "";
             document.getElementById('pswd').value = "";
-            alert("login successfull!");
+            var url = new URL("file:///D:/sharpner/Expensetracker_project/public/html/addExpense.html");
+            url.searchParams.set('id', response.data.userid);
+            location.replace(url);
         }
         
     }catch(err){
@@ -29,7 +31,11 @@ signinbtn.addEventListener("click", async (e) => {
             }
         }
         else{
-            message.innerText = "❌ Network error";
+            if(err.response.data.fields === "empty"){
+                message.innerText = "❌ Please fill all the fields";
+            } else {
+                message.innerText = "❌ Network error";
+            }
         }
     }
 });

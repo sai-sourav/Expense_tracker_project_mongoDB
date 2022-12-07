@@ -10,6 +10,9 @@ const path = require('path');
 const sequelize = require('./util/database');
 
 const userroute = require('./routes/userroute');
+const expenseroute = require('./routes/expensesroute');
+const User = require('./models/user');
+const Expense = require('./models/expenses');
 
 app.use(bodyparser.json());
 
@@ -19,7 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(userroute);
 
-sequelize.sync()
+app.use(expenseroute);
+
+Expense.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Expense);
+
+sequelize
+.sync()
+// .sync( {force : true} )
 .then( result => {
     app.listen(4000);
 })

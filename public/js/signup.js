@@ -32,6 +32,10 @@ signupbtn.addEventListener("click", async (e) => {
             document.getElementById('pswd').value = "";
         }
     }catch(err){
-        message.innerText = "❌ Network error";
+        if(err.response.data.fields === "empty"){
+            message.innerText = "❌ Please fill all the fields";
+        } else {
+            message.innerText = "❌ Network error";
+        }
     }
 })
