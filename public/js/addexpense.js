@@ -5,9 +5,7 @@ const addexpensebtn = document.getElementById('addexpensebtn');
 const expenses_list = document.getElementById('expenses-list');
 const saveexpensebtn = document.getElementById('saveexpense');
 
-const querystring = window.location.search;
-const urlParams = new URLSearchParams(querystring);
-const userid = urlParams.get('id');
+const token = localStorage.getItem('token');
 
 const IP = "localhost";
 
@@ -26,7 +24,12 @@ document.addEventListener("DOMContentLoaded", getexpenses);
 async function getexpenses(){
     expenses_list.innerHTML = "";
     try{
-        let response = await axios.get(`http://${IP}:4000/expenses?id=${userid}`);
+        let response = await axios.get(`http://${IP}:4000/expenses`, 
+        { 
+            headers: {
+                "Authorization" : token
+            } 
+        });
         response = response.data;
         showexpenses(response.expenses);
     }catch(err){
@@ -71,10 +74,14 @@ saveexpensebtn.addEventListener("click", async (e)=> {
     message.innerText = "";
     try{
         const response = await axios.post(`http://${IP}:4000/expenses`,{
-            userid : userid,
             amount : amount,
             Description : desc,
             category : category
+        },
+        { 
+        headers: {
+            'Authorization' : token
+        }
         });
         document.getElementById('amount').value = "";
         document.getElementById('desc').value = "";
@@ -99,9 +106,13 @@ expenses_list.addEventListener("click", async (e)=>{
     if( e.target.className === "delete-expense-button"){
         const expenseid = e.target.parentNode.id;
         try{
-            const response = await axios.post(`http://${IP}:4000/deleteexpense`,{
-                expenseid : expenseid,
-                userid : userid
+            const response = await axios.post(`http://${IP}:4000/deleteexpense`, {
+                expenseid : expenseid
+            },
+            { 
+                headers: {
+                    "Authorization" : token
+                } 
             })
             getexpenses();
         } catch(err){
@@ -111,8 +122,4 @@ expenses_list.addEventListener("click", async (e)=>{
         }
 
     }
-})
-
-
-
-
+});

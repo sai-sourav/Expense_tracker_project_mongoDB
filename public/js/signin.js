@@ -17,7 +17,7 @@ signinbtn.addEventListener("click", async (e) => {
             document.getElementById('email').value = "";
             document.getElementById('pswd').value = "";
             var url = new URL("file:///D:/sharpner/Expensetracker_project/public/html/addExpense.html");
-            url.searchParams.set('id', response.data.userid);
+            localStorage.setItem('token', response.data.token);
             location.replace(url);
         }
         

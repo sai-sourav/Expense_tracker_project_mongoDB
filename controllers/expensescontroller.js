@@ -1,10 +1,7 @@
 const User = require('../models/user');
 
-const Expense = require('../models/expenses');
-const { response } = require('express');
-
 exports.getexpenses = async (req, res, next) => {
-    const userid = req.query.id;
+    const userid = req.body.userid;
     try{
         const user = await User.findByPk(userid);
         const expenses = await user.getExpenses();
@@ -18,10 +15,11 @@ exports.getexpenses = async (req, res, next) => {
 }
 
 exports.postexpenses = async (req, res, next) => {
-    let amount = req.body.amount;
-    let Description = req.body.Description;
-    let category = req.body.category;
+    const amount = req.body.amount;
+    const Description = req.body.Description;
+    const category = req.body.category;
     const userid = req.body.userid;
+    console.log(userid);
     if((amount === "") || (Description === "") || (category === "")){
         return res.status(500).json({fields : "empty"});
     }

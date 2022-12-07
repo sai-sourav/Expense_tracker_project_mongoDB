@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 exports.usersignup = async (req, res, next) => {
@@ -73,7 +74,7 @@ exports.usersignin = async (req, res, next) => {
                         res.status(200).json({
                             email : true,
                             pswd : true,
-                            userid : search.id
+                            token : generateaccesstoken(search.id)
                         })
                     }
                     else {
@@ -93,4 +94,8 @@ exports.usersignin = async (req, res, next) => {
            });
         }
     }
+}
+
+function generateaccesstoken(id) {
+    return jwt.sign({ userid : id } , process.env.TOKEN_SECRET);
 }
