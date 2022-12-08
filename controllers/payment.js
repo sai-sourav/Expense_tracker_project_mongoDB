@@ -15,7 +15,8 @@ exports.purchasepremium = async (req, res, next) => {
 
         rzp.orders.create({amount, currency: "USD"}, (err, order) => {
             if(err) {
-                throw new Error(err);
+                console.log(err);
+                return res.status(403).json({ message: 'Something went wrong', error: err})
             }
             user.createOrder({ orderid: order.id, status: 'PENDING'}).then(() => {
                 return res.status(201).json({ order, key_id : rzp.key_id});

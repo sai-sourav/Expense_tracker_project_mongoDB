@@ -375,6 +375,7 @@ textarea:focus, input:focus {
 .popup-premium {
     position: absolute;
     width: 250px;
+    left: 450px;
 }
 
 #close {
@@ -413,7 +414,7 @@ textarea:focus, input:focus {
     padding: 100px;
     position: relative;
     height: 80px;
-    width: 120px;
+    width: 500px;
 }
 
 #premiumshow h2 {
@@ -423,14 +424,15 @@ textarea:focus, input:focus {
 
 #premiumlist {
     position: absolute;
-    top: 70px;
-    left: 20px;
-    width: 300px;
+    top: 50px;
+    left: 10px;
+    width: 700px;
 }
 
 #premiumlist h2 {
     position: absolute;
 }
+
 .payment-btn {
     background-color: rebeccapurple;
     cursor: pointer;
@@ -438,8 +440,8 @@ textarea:focus, input:focus {
     position: absolute;
     color: white;
     font-family: inherit;
-    left: 10px;
-    top: 200px;
+    left: 200px;
+    top: 230px;
     font-size: 20px;
     padding: 0.5rem;
     width: 300px;

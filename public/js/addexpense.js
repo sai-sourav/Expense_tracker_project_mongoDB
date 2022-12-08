@@ -92,11 +92,11 @@ async function getexpenses(){
         showexpenses(response.expenses);
         ispremiumuser(response.ispremiumuser);
     }catch(err){
-        if(err){
-            console.log(err.response);
+        if(err !== null){
+            console.log(err);
             const div = document.createElement('div');
             div.id = "networkerror";
-            div.innerText = "❌ Network error";
+            div.innerText = "❌ Something went wrong";
             expenses_list.appendChild(div);
         }
     }
@@ -151,7 +151,7 @@ saveexpensebtn.addEventListener("click", async (e)=> {
         if(err.response.data.fields === "empty"){
             message.innerText = "❌ Please fill all the fields";
         } else {
-            message.innerText = "❌ Network error";
+            message.innerText = "❌ Something went wrong";
         }
     }
 })
@@ -197,9 +197,6 @@ function ispremiumuser(bool) {
         categoryfield.classList.add('dark');
         for(i=0; i<labels.length; i++){
             labels[i].classList.add("dark");
-        }
-        for(i=0; i<expenses.length; i++){
-            expenses[i].classList.add("dark");
         }
         formtitle.classList.add("dark");
     }else {
