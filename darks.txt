@@ -1,0 +1,23 @@
+#container.dark
+
+#expenses-list.dark
+
+#noexpenses.dark
+
+#expenseform.dark
+
+#networkerror.dark
+
+#close.dark
+
+#amount.dark
+
+#desc.dark
+
+#category.dark
+
+label.dark
+
+#formtitle.dark
+
+.expense-item .dark

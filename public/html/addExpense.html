@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/expense.css">
     <title>Expenses</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-    <script src="../js/addexpense.js" defer></script>
 </head>
 <body>
+    <button id="premium">Buy Premium</button>
+    <label id="darkmode" class="switch">
+        <input id="toggle" type="checkbox" checked>
+        <span class="slider round"></span>
+    </label>
     <div id="title">
         <h1>Expense Tracker</h1>
         <h3>Track your expenses -Anywhere -Anytime.</h3>
@@ -35,13 +38,13 @@
     <br>
     <div class="popup-container" id="popup-container">
         <div class="popup">
-            <fieldset>
+            <fieldset id="expenseform">
                 <button id="close">X</button>
-                <h2>Expense Details</h2><br>
+                <h2 id="formtitle">Expense Details</h2><br>
                 <p id="exists"></p>
                 <form id="addexpense" class="addExpense-form">
                     <label for="amount">Full amount:</label><br>
-                    <input type="number" placeholder="eg:- 2000" id="amount" required><br><br>
+                    <input type="text" placeholder="eg:- 2000" id="amount" required><br><br>
                     <label for="desc">Description:</label><br>
                     <textarea id="desc" form="addexpense" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
                     <label for="category">Category:</label><br>
@@ -56,5 +59,21 @@
             </fieldset>
         </div>
     </div>
+    <div class="popup-container-premium" id="popup-container-premium">
+        <div class="popup-premium">
+            <fieldset id="premiumshow">
+                <button id="closepremium">X</button>
+                <h2>Premium Features</h2><br>
+                <ul id="premiumlist">
+                    <li class="premiumitem">✔️ Dark mode</li>
+                    <li class="premiumitem">✔️ No ads</li>
+                </ul>
+                <button id="payment" class="payment-btn">Proceed to payment</button>
+            </fieldset>
+        </div>
+    </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="../js/addexpense.js" defer></script>
 </html>

@@ -6,6 +6,7 @@ exports.getexpenses = async (req, res, next) => {
         const user = await User.findByPk(userid);
         const expenses = await user.getExpenses();
         res.status(200).json({
+            ispremiumuser : user.ispremiumuser,
             expenses : expenses,
             status : "success"
         })
@@ -19,7 +20,7 @@ exports.postexpenses = async (req, res, next) => {
     const Description = req.body.Description;
     const category = req.body.category;
     const userid = req.body.userid;
-    console.log(userid);
+    // console.log(userid);
     if((amount === "") || (Description === "") || (category === "")){
         return res.status(500).json({fields : "empty"});
     }
