@@ -1,7 +1,21 @@
 const signinbtn = document.getElementById('signinbtn');
 const message = document.getElementById("message");
+const forgotten = document.getElementById('forgotten');
+const popupcontainer = document.getElementById('popup-container');
+const closeforgotpassword = document.getElementById('close-forgotpassword');
+const forgotok = document.getElementById('forgot-ok');
 
 const IP = "localhost";
+
+forgotten.addEventListener("click", (e)=> {
+    e.preventDefault();
+    popupcontainer.classList.add("active");
+});
+
+closeforgotpassword.addEventListener("click", (e)=> {
+    e.preventDefault();
+    popupcontainer.classList.remove("active");
+})
 
 signinbtn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -39,3 +53,17 @@ signinbtn.addEventListener("click", async (e) => {
         }
     }
 });
+
+forgotok.addEventListener("click", async (e) =>{
+    e.preventDefault();
+    try{
+        const emailid = document.getElementById('forgot-email').value;
+        const response = await axios.get(`http://${IP}:4000/password/forgotpassword/${emailid}`)
+        document.getElementById('forgot-email').value = "";
+        popupcontainer.classList.remove("active");
+    }catch(err){
+        if(err){
+            console.log(err);
+        }
+    }
+})

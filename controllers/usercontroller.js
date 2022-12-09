@@ -96,6 +96,12 @@ exports.usersignin = async (req, res, next) => {
     }
 }
 
+exports.forgotpassword = (req, res, next) => {
+    const emailid = req.params.emailid;
+    console.log(emailid);
+    res.status(200).json({status: "success"});
+}
+
 function generateaccesstoken(id) {
     return jwt.sign({ userid : id } , process.env.TOKEN_SECRET);
 }

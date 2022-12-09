@@ -14,18 +14,29 @@
         <h1>Expense Tracker</h1>
         <h3>Track your expenses -Anywhere -Anytime.</h3>
     </div>
-    <fieldset>
+    <fieldset id="signin">
         <h2>Sign In</h2>
         <p id="message"></p>
-        <form id="signin" class="signup-form">
+        <form id="signin-form" class="signup-form">
             <label for="email">Email id:</label><br>
-            <input type="email" placeholder="Enter your email" id="email" required><br><br>
+            <input type="email" placeholder="Enter your email" id="email"><br><br>
             <label for="pswd">Password:</label><br>
-            <input type="password" placeholder="Enter your Password" id="pswd" required><br><br>
+            <input type="password" placeholder="Enter your Password" id="pswd"><br><br>
             <button id="signinbtn" class="signup-btn">Log in</button><br><br><br>
-            <a id="forgotten" href="#">Need help?</a>
+            <button id="forgotten">Forgot password?</button><br>
             <a id="newuser" href="./signup.html">New User-Register</a>
         </form>
     </fieldset>
+    <div class="popup-container" id="popup-container">
+        <div class="popup">
+            <fieldset id="forgotpassword">
+                <button id="close-forgotpassword">X</button>
+                <h2 id="formtitle">Forgotten password?</h2><br><br>
+                <label for="forgot-email">Email id:</label><br>
+                <input type="email" placeholder="Enter your email" id="forgot-email" required><br><br>
+                <button id="forgot-ok" class="saveexpense-btn">OK</button>
+            </fieldset>
+        </div>
+    </div>
 </body>
 </html>

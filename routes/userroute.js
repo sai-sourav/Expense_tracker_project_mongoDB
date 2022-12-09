@@ -6,4 +6,6 @@ router.post('/signup', usercontroller.usersignup);
 
 router.post('/signin', usercontroller.usersignin);
 
+router.get('/password/forgotpassword/:emailid', usercontroller.forgotpassword);
+
 module.exports = router;
