@@ -1,11 +1,11 @@
 const signupbtn = document.getElementById('signupbtn');
 const message = document.getElementById("exists");
 const container = document.getElementById('container');
-const close = document.getElementById('close');
+const ok = document.getElementById('ok');
 
 const IP = "localhost";
 
-close.addEventListener("click", (e)=> {
+ok.addEventListener("click", (e)=> {
     e.preventDefault();
     container.classList.remove("active");
 });

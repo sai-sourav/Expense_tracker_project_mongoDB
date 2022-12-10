@@ -234,3 +234,16 @@ input {
     position: fixed;
     top: 22vh;
 }
+
+#accountcreationsuccess {
+    background-color: whitesmoke;
+    border-radius: 30px;
+    padding: 25px;
+    position: fixed;
+    top: 37vh;
+}
+
+#ok {
+    position: relative;
+    left: 15%;
+}

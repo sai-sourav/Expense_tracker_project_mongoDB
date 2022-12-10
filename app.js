@@ -16,6 +16,7 @@ const razorpayroute = require('./routes/payment');
 const User = require('./models/user');
 const Expense = require('./models/expenses');
 const Order = require('./models/premiumorder');
+const Forgotpswd = require('./models/forgotpswd');
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
@@ -40,6 +41,8 @@ app.use((req, res, next) => {
 Expense.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Expense);
 
+Forgotpswd.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Forgotpswd);
 
 User.hasMany(Order);
 Order.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });

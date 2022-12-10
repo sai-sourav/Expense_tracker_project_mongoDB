@@ -1,8 +1,10 @@
 const User = require('../models/user');
+const Forgotpswd = require('../models/forgotpswd');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const IP = "localhost";
+const {v4 : uuidv4} = require('uuid')
 exports.usersignup = async (req, res, next) => {
     try{
         const name = req.body.name;
@@ -102,14 +104,18 @@ exports.forgotpassword = async (req, res, next) => {
     try{
         let user = await User.findAll( {where : {emailid : emailid} });
         user = user[0];
-        // console.log(user);
         if(!user){
             return res.status(404).json({ found: "false",status: "success"});
         }
         else {
+            const newId = uuidv4();
+            const result = await user.createForgotPasswordRequest({
+                id: newId,
+                isactive: true
+            })
             res.status(200).json({
                 found: "true",
-                link: `http://${IP}:4000/html/forgotpassword.html`,
+                link: `http://${IP}:4000/html/forgotpassword.html?id=${newId}`,
                 status: "success"
             })
         }
@@ -126,29 +132,42 @@ exports.forgotpassword = async (req, res, next) => {
 }
 
 exports.resetpassword = async (req, res, next) => {
-    const userid = req.body.userid;
     const newpswd = req.body.newpswd;
-
-    try{
-        const user = await User.findByPk(userid);
-        bcrypt.hash(newpswd, saltRounds, async(err,hash) => {
-            if (err){
-                return res.status(500).json({
-                    error : err
+    const uid = req.body.uid;
+    const getforgotpswd = await Forgotpswd.findByPk(uid);
+    const userid = getforgotpswd.userId;
+    if (getforgotpswd.isactive === true){
+        try{
+            const user = await User.findByPk(userid);
+            bcrypt.hash(newpswd, saltRounds, async(err,hash) => {
+                if (err){
+                    return res.status(500).json({
+                        error : err
+                    });
+                }
+                const response = await user.update({
+                    password : hash
                 });
-            }
-            const response = await user.update({
-                password : hash
+                await getforgotpswd.update({
+                    isactive : false
+                });
+                res.status(201).json({
+                    updated : true
+                });
             });
-            res.status(201).json({
-                updated : true
+        }catch(err){
+            res.status(500).json({
+                error : err
             });
-        });
-    }catch(err){
-        res.status(500).json({
-            error : err
-        });
+        }
+    } else {
+        res.status(404).json({
+            link: "expired"
+        })
     }
+
+
+    
 }
 
 function generateaccesstoken(id) {

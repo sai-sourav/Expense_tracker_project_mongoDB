@@ -4,12 +4,8 @@ const message = document.getElementById("message");
 
 const IP = "localhost";
 
-const token = localStorage.getItem('token');
-const headers = { 
-    headers: {
-        'Authorization' : token
-    }
-}
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
 savepswd.addEventListener("click", async (e)=> {
     e.preventDefault();
@@ -25,8 +21,9 @@ savepswd.addEventListener("click", async (e)=> {
     else{
         try{
             const result = await axios.post(`http://${IP}:4000/password/resetpassword`, {
-            newpswd : newpswd
-            }, headers);
+                uid : urlParams.get('id'),
+                newpswd : newpswd
+            });
             resetpassword.innerHTML = "";
             const message = document.createElement('p');
             message.id = "message";
@@ -40,7 +37,20 @@ savepswd.addEventListener("click", async (e)=> {
     
         }catch(err) {
             if(err){
-                console.log(err);
+                if(err.response.status === 404){
+                    resetpassword.innerHTML = "";
+                    const message = document.createElement('p');
+                    message.id = "message";
+                    message.innerText = "❌ Your Reset password link is Expired";
+                    resetpassword.appendChild(message);
+                }
+                else{
+                    resetpassword.innerHTML = "";
+                    const message = document.createElement('p');
+                    message.id = "message";
+                    message.innerText = "❌ Something went wrong";
+                    resetpassword.appendChild(message);
+                }
             }
         }
     }
