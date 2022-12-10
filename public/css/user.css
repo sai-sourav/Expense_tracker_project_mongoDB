@@ -42,6 +42,14 @@ body {
     top: 25vh;
 }
 
+#resetpswd {
+    background-color: whitesmoke;
+    border-radius: 30px;
+    padding: 30px;
+    position: relative;
+    top: 25vh;
+}
+
 button {
     background-color: rebeccapurple;
     cursor: pointer;
@@ -97,6 +105,24 @@ button:hover {
     border-radius: 10px;
     color: white;
     line-height: 15px;
+}
+
+#reset-signin {
+    text-decoration: none;
+    display: block;
+    width: 140px;
+    height: 15px;
+    background: green;
+    /* margin-bottom: 20px; */
+    padding: 7px;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    line-height: 15px;
+    position: absolute;
+    left: 150px;
 }
 
 #forgotten {
@@ -162,6 +188,10 @@ input {
     position: relative;
 }
 
+#forgotpassword.link {
+    width: 500px;
+}
+
 #close-forgotpassword {
     background-color: whitesmoke;
     cursor: pointer;
@@ -184,4 +214,23 @@ input {
 #formtitle {
     position: absolute;
     top: 15px;
+}
+
+#savepassword {
+    width: 300px;
+    left: 2px;
+    top: 160px;
+    position: absolute;
+}
+
+#forgotpswd-form {
+    position: relative;
+}
+
+#signupfield {
+    background-color: whitesmoke;
+    border-radius: 30px;
+    padding: 45px;
+    position: fixed;
+    top: 22vh;
 }

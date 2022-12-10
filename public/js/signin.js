@@ -4,6 +4,8 @@ const forgotten = document.getElementById('forgotten');
 const popupcontainer = document.getElementById('popup-container');
 const closeforgotpassword = document.getElementById('close-forgotpassword');
 const forgotok = document.getElementById('forgot-ok');
+const forgotfieldset = document.getElementById('forgotpassword');
+const forgotmessage = document.getElementById("forgotmessage");
 
 const IP = "localhost";
 
@@ -30,7 +32,7 @@ signinbtn.addEventListener("click", async (e) => {
         if(response.data.email === true && response.data.pswd === true){
             document.getElementById('email').value = "";
             document.getElementById('pswd').value = "";
-            var url = new URL("file:///D:/sharpner/Expensetracker_project/public/html/addExpense.html");
+            var url = new URL(`http://${IP}:4000/html/addExpense.html`);
             localStorage.setItem('token', response.data.token);
             location.replace(url);
         }
@@ -56,14 +58,28 @@ signinbtn.addEventListener("click", async (e) => {
 
 forgotok.addEventListener("click", async (e) =>{
     e.preventDefault();
-    try{
-        const emailid = document.getElementById('forgot-email').value;
-        const response = await axios.get(`http://${IP}:4000/password/forgotpassword/${emailid}`)
-        document.getElementById('forgot-email').value = "";
-        popupcontainer.classList.remove("active");
-    }catch(err){
-        if(err){
-            console.log(err);
+    forgotmessage.innerText = "";
+    const emailid = document.getElementById('forgot-email').value;
+    if(emailid === ""){
+        forgotmessage.innerText = "❌ Please fill all the fields";
+    }
+    else{
+        try{
+            let response = await axios.get(`http://${IP}:4000/password/forgotpassword/${emailid}`);
+            response = response.data;
+            document.getElementById('forgot-email').value = "";
+            forgotfieldset.innerHTML = "";
+            const message = document.createElement('p');
+            message.id = "forgotmessage1";
+            message.innerHTML = `✔️ Please Reset your password using this <a href='${response.link}'>Reset Password link</a>`;
+            forgotfieldset.appendChild(message);
+            forgotfieldset.classList.add("link");
+        }catch(err){
+            if(err.response.status !== 500){
+                    forgotmessage.innerText = "❌ Wrong Email entered";
+            }else {
+                forgotmessage.innerText = "❌ Something went wrong";
+            }
         }
     }
 })

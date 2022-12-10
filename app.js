@@ -30,6 +30,13 @@ app.use(userroute);
 
 app.use(expenseroute);
 
+app.use((req, res, next) => {
+    if(req.url === '/'){
+        req.url = "html/signup.html";
+    }
+    res.sendFile(path.join(__dirname,`public/${req.url}`));
+});
+
 Expense.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Expense);
 
