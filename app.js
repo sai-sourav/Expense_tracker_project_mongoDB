@@ -12,11 +12,13 @@ const sequelize = require('./util/database');
 const userroute = require('./routes/userroute');
 const expenseroute = require('./routes/expensesroute');
 const razorpayroute = require('./routes/payment');
+const creditsroute = require('./routes/creditsroute');
 
 const User = require('./models/user');
 const Expense = require('./models/expenses');
 const Order = require('./models/premiumorder');
 const Forgotpswd = require('./models/forgotpswd');
+const Credit = require('./models/credits');
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
@@ -29,6 +31,8 @@ app.use(razorpayroute);
 
 app.use(userroute);
 
+app.use(creditsroute);
+
 app.use(expenseroute);
 
 app.use((req, res, next) => {
@@ -40,6 +44,9 @@ app.use((req, res, next) => {
 
 Expense.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Expense);
+
+Credit.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Credit);
 
 Forgotpswd.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Forgotpswd);

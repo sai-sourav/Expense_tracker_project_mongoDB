@@ -32,7 +32,7 @@ signinbtn.addEventListener("click", async (e) => {
         if(response.data.email === true && response.data.pswd === true){
             document.getElementById('email').value = "";
             document.getElementById('pswd').value = "";
-            var url = new URL(`http://${IP}:4000/html/addExpense.html`);
+            var url = new URL(response.data.url);
             localStorage.setItem('token', response.data.token);
             location.replace(url);
         }

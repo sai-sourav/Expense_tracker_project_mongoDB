@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/expense.css">
     <title>Expenses</title>
+    <script src="/js/addexpense.js" defer></script>
 </head>
 <body>
     <button id="premium">Buy Premium</button>
@@ -14,14 +15,8 @@
         <h3>Track your expenses -Anywhere -Anytime.</h3>
     </div>
     <div class="list-main-container" id="container">
-        <p id="dailycredits" class="total-credits">Total credit: $0</p>
-        <p id="dailydebits" class="total-debits">Total debit: $0</p>
-        <p id="dailysavings" class="total-savings">Total Savings: $0</p>
-        <button id="addexpensebtn" class="add-expense-btn">✙ Add Expense</button>
-        <button id="addcreditbtn" class="add-expense-btn">✙ Add Credit</button>
+        <button id="addexpensebtn" class="add-expense-btn">✙ Add Credit/Debit</button>
         <div id="expenses-list" class="list-sub-container">
-            <h3 class="credit-title">Credit Details</h3>
-            <h3 class="debit-title">Debit Details</h3>
             <div id="dailyleft" class="credit-container global">
                 <!-- <div id = "1" class="expense-item">
                     <h3 class="showamount">Amount credit: $200</h3>
@@ -56,48 +51,10 @@
     </div>
     <br>
     <div class="popup-container" id="popup-container">
-        <div class="popup">
-            <fieldset id="expenseform">
-                <button id="close">X</button>
-                <h2 id="formtitle">Expense Details</h2><br>
-                <p id="exists"></p>
-                <form id="addexpense" class="addExpense-form">
-                    <label for="amount">Full amount:</label><br>
-                    <input type="text" placeholder="eg:- 2000" id="amount" required><br><br>
-                    <label for="desc">Description:</label><br>
-                    <textarea id="desc" form="addexpense" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
-                    <label for="category">Category:</label><br>
-                        <select id="category" required>
-                            <option value="Fuel">Fuel</option>
-                            <option value="Movie">Movie</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Food">Food</option>
-                        </select><br><br>
-                    <button id="saveexpense" class="saveexpense-btn">Save Debit</button>
-                </form>
-            </fieldset>
+        <div id="box">
+
         </div>
-    </div>
-    <div class="popup-container" id="popup-container1">
-        <div class="popup">
-            <fieldset id="creditform">
-                <button id="close1">X</button>
-                <h2 id="formtitle1">Credit Details</h2><br>
-                <p id="exists1"></p>
-                <form id="addexpense1" class="addExpense-form">
-                    <label for="amount1">Full amount:</label><br>
-                    <input type="text" placeholder="eg:- 2000" id="amount1" required><br><br>
-                    <label for="desc1">Description:</label><br>
-                    <textarea id="desc1" form="addexpense" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
-                    <label for="category1">Category:</label><br>
-                        <select id="category1" required>
-                            <option value="Salary">Salary</option>
-                            <option value="Other">Other</option>
-                        </select><br><br>
-                    <button id="savecredit" class="saveexpense-btn">Save Credit</button>
-                </form>
-            </fieldset>
-        </div>
+          
     </div>
     <div class="popup-container-premium" id="popup-container-premium">
         <div class="popup-premium">
@@ -117,5 +74,4 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="/js/addexpense.js" defer></script>
 </html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../premiumcss/practice.css">
+        <title>Expenses</title>
+    </head>
+    <body>
+        <div id="title">
+            <h1>Expense Tracker</h1>
+            <h3>Track your expenses -Anywhere -Anytime.</h3>
+        </div>
+        <label id="darkmode" class="switch">
+            <input id="toggle" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+        <button id="leaderboard-btn">Leaderboard</button>
+        <button id="downloadpdf" class="add-btn">Download PDF</button>
+        <div id="tab" class="tab global">
+            <button id="dailytab" class="tablinks global" onclick="openTab(event, 'daily')">Daily</button>
+            <button id="weeklytab" class="tablinks global" onclick="openTab(event, 'weekly')">Weekly</button>
+            <button id="monthlytab" class="tablinks global" onclick="openTab(event, 'monthly')">Monthly</button>
+        </div>
+
+        <div id="daily" class="tabcontent">
+            <p id="dailycredits" class="total-credits">Total credit: $0</p>
+            <p id="dailydebits" class="total-debits">Total debit: $0</p>
+            <p id="dailysavings" class="total-savings">Total Savings: $0</p>
+            <input type="date" id="date" class="selection global">
+            <button id="getdate" class="get-btn">Get details</button>
+            <button id="adddetails" class="add-btn">✙ Add Credit / Debit</button>
+            <h3 class="credit-title ">Credit Details</h3>
+            <h3 class="debit-title ">Debit Details</h3>
+            <div id="daily-cont">
+            <div id="dailyleft" class="credit-container global">
+                <!-- <div id = "1" class="expense-item">
+                    <h3 class="showamount">Amount credit: $200</h3>
+                    <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                    <h3 class="showcat">Category: Movie</h3>
+                    <button class="delete-credit-button" type='button'>Delete credit</button>
+                </div>
+                <br>
+                <div id = "1" class="expense-item">
+                    <h3 class="showamount">Amount spent: $200</h3>
+                    <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                    <h3 class="showcat">Category: Movie</h3>
+                    <button class="delete-credit-button" type='button'>Delete credit</button>
+                </div> -->
+            </div>
+            <div id="dailyright" class="debit-container global">
+                <!-- <div id = "1" class="expense-item">
+                    <h3 class="showamount">Amount spent: $200</h3>
+                    <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                    <h3 class="showcat">Category: Movie</h3>
+                    <button class="delete-expense-button" type='button'>Delete Expense</button>
+                </div>
+                <br>
+                <div id = "1" class="expense-item">
+                    <h3 class="showamount">Amount spent: $200</h3>
+                    <h3 class="showdesc">Description: RRR movie Tickets</h3>
+                    <h3 class="showcat">Category: Movie</h3>
+                    <button class="delete-expense-button" type='button'>Delete Expense</button>
+                </div> -->
+            </div>
+        </div>
+        </div>
+
+        <div id="weekly" class="tabcontent">
+            <p id="weeklycredits" class="total-credits">Total credit: $0</p>
+            <p id="weeklydebits" class="total-debits">Total debit: $0</p>
+            <p id="weeklysavings" class="total-savings">Total Savings: $0</p>
+            <input type="week" id="week" class="selection global">
+            <button id="getweek" class="get-btn">Get details</button>
+            <h3 class="credit-title ">Credit Details</h3>
+            <h3 class="debit-title ">Debit Details</h3>
+            <div id="weekly-cont">
+            <div id="weeklyleft" class="credit-container global">
+
+            </div>
+            <div id="weeklyright" class="debit-container global">
+
+            </div>
+            </div>
+        </div>
+
+        <div id="monthly" class="tabcontent">
+            <p id="monthlycredits" class="total-credits">Total credit: $0</p>
+            <p id="monthlydebits" class="total-debits">Total debit: $0</p>
+            <p id="monthlysavings" class="total-savings">Total Savings: $0</p>
+            <input type="month" id="month" class="selection global">
+            <button id="getmonth" class="get-btn">Get details</button>
+            <h3 class="credit-title ">Credit Details</h3>
+            <h3 class="debit-title ">Debit Details</h3>
+            <div id="monthly-cont">
+            <div id="monthlyleft" class="credit-container global">
+
+            </div>
+            <div id="monthlyright" class="debit-container global">
+
+            </div>
+            </div>
+        </div>
+        <div class="popup-container global" id="popup-container">
+            <div class="popup global">
+                <button id="close" class="close global">X</button>
+                <div id="popup-tab" class="popup-tab global">
+                    <button id="credittab" class="popup-tablinks global" onclick="openpopupTab(event, 'creditform')">Income (Credit)</button>
+                    <button id="expensetab" class="popup-tablinks global" onclick="openpopupTab(event, 'debitform')">Expense (debit)</button>
+                </div>
+                <fieldset id="creditform" class="popup-tabcontent">
+                    <p id="creditexists"></p>
+                    <form id="addcredit" class="addExpense-form">
+                        <label for="creditamount">Full amount:</label><br>
+                        <input type="text" placeholder="eg:- 2000" id="creditamount" required><br><br>
+                        <label for="creditdesc">Description:</label><br>
+                        <textarea id="creditdesc" form="addcredit" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
+                        <label for="creditcategory">Category:</label><br>
+                            <select id="creditcategory" class="global" required>
+                                <option value="Salary">Salary</option>
+                                <option value="Other">Other</option>
+                            </select><br><br>
+                        <button id="savecredit" class="saveexpense-btn">Save Credit</button>
+                    </form>
+                </fieldset>
+                <fieldset id="debitform" class="popup-tabcontent">
+                    <p id="debitexists"></p>
+                    <form id="addexpense" class="addExpense-form">
+                        <label for="amount">Full amount:</label><br>
+                        <input type="text" placeholder="eg:- 2000" id="amount" required><br><br>
+                        <label for="desc">Description:</label><br>
+                        <textarea id="desc" form="addexpense" maxlength="50" placeholder="Enter text here..."></textarea><br><br>
+                        <label for="category">Category:</label><br>
+                            <select id="category" class="global" required>
+                                <option value="Fuel">Fuel</option>
+                                <option value="Movie">Movie</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Food">Food</option>
+                            </select><br><br>
+                        <button id="saveexpense" class="saveexpense-btn">Save Debit</button>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+        <div class="popup-container-leaderboard" id="popup-container-leaderboard-id">
+            <div id="popup-leaderboard" class="popup-leaderboard global">
+                <button id="Dashbord-btn"> << Back to Dashbord</button>
+                <div id="lifetime" class="lifetime-container global">
+                    <h4 id="lifetime-credits-title" class="global">Total credits</h4>
+                    <h4 id="lifetime-Debits-title" class="global">Total expenses</h4>
+                    <h4 id="lifetime-savings-title" class="global">Total Savings</h4>
+                    <div id="lifetime-credits">
+                        <h1 id="totallifecredit" class="lifetime-values global">$0</h1>
+                    </div>
+                    <div id="lifetime-Debits">
+                        <h1 id="totallifedebit" class="lifetime-values global">$0</h1>
+                    </div>
+                    <div id="lifetime-savings" class="global">
+                        <h1 id="totallifesaving" class="lifetime-values global">$0</h1>
+                    </div>
+                </div>
+                <div id="ranking" class="ranking-container global">
+                    <div class="heading global">
+                        <div class="column-heading global" id="rank">
+                          <h2>Rank</h2>
+                        </div>
+                        <div class="column-heading global" id="name">
+                          <h2>Name</h2>
+                        </div>
+                        <div class="column-heading global" id="credit">
+                          <h2>Total credit</h2>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div id="leaderboard-list">
+                        <!-- <div id = "1" class="row">
+                            <p class="rank">1</p>
+                            <p class="name">T K R S SAI SOURAV</p>
+                            <p class="credit">$1000</p>
+                        </div>
+                        <br>
+                        <div id = "2" class="row">
+                            <p class="rank">2</p>
+                            <p class="name">PRATHYUSHA</p>
+                            <p class="credit">$989</p>
+                        </div>
+                        <br>
+                        <div id = "3" class="row">
+                            <p class="rank">3</p>
+                            <p class="name">Tvnk murthy</p>
+                            <p class="credit">$970</p>
+                        </div> -->
+                    </div>
+                </div>
+                
+            </div>
+        </div>   
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> 
+    <script src="../premiumjs/practice.js" defer></script>
+</html> 

@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const IP = "localhost";
-const {v4 : uuidv4} = require('uuid')
+const {v4 : uuidv4} = require('uuid');
+const Expense = require('../models/expenses');
+const Credit = require('../models/credits');
 exports.usersignup = async (req, res, next) => {
     try{
         const name = req.body.name;
@@ -52,6 +54,7 @@ exports.usersignin = async (req, res, next) => {
     try{
         const emailid = req.body.emailid;
         const pswd = req.body.pswd;
+        var URL;
         if((emailid === "") || (pswd === "")){
             return res.status(500).json({fields : "empty"});
         }
@@ -60,14 +63,15 @@ exports.usersignin = async (req, res, next) => {
                 emailid: emailid
             }
         });
-        search = search[0];
-        
-        if(!search){
-            res.status(404).json({
-                email : false,
-                pswd : false
-            });
-        }else {
+        if (search.length > 0){
+            search = search[0];
+            const ispremiumuser = search.ispremiumuser;
+            if (ispremiumuser === true){
+                URL = `http://${IP}:4000/premiumhtml/practice.html`
+
+            }else{
+                URL = `http://${IP}:4000/html/addExpense.html`
+            }
             bcrypt.compare(pswd, search.password, async (err,result) => {
                 if(err){
                     throw new Error("something went wrong");
@@ -77,7 +81,8 @@ exports.usersignin = async (req, res, next) => {
                         res.status(200).json({
                             email : true,
                             pswd : true,
-                            token : generateaccesstoken(search.id)
+                            token : generateaccesstoken(search.id),
+                            url : URL
                         })
                     }
                     else {
@@ -88,8 +93,12 @@ exports.usersignin = async (req, res, next) => {
                     }
                 }
             })
+        }else {
+            res.status(404).json({
+                email : false,
+                pswd : false
+            });
         }
-
     }catch(err) {
         if(err) {
            res.status(500).json({
@@ -168,6 +177,67 @@ exports.resetpassword = async (req, res, next) => {
 
 
     
+}
+
+exports.getlifetimedata = async (req,res,next) => {
+    const userid = req.body.userid;
+    try{
+        let totalexpenses = await Expense.sum('amount',{
+            where: {
+                userId : userid
+            }
+        });
+        let totalcredits = await Credit.sum('amount',{
+            where: {
+                userId : userid
+            }
+        });
+        if(totalcredits === null){
+            totalcredits = 0;
+        }
+        if(totalexpenses === null){
+            totalexpenses = 0;
+        }
+        res.status(200).json({
+            lifetimeexpenses : totalexpenses,
+            lifetimecredits : totalcredits,
+            status : "success"
+        })
+    }catch(err){
+        res.status(500).json({error : err.response});
+    }
+}
+
+exports.getleaderboard = async (req,res,next) => {
+    const array = [];
+    try{
+        const users = await User.findAll();
+        for(i=0; i<users.length; i++){
+            const user = users[i];
+            let totalcredits = await Credit.sum('amount',{
+                where: {
+                    userId : user.id
+                }
+            });
+            if(totalcredits === null){
+                totalcredits = 0;
+            }
+            const obj = {
+                name : user.name,
+                credits : totalcredits
+            }
+            array.push(obj);
+        }
+        array.sort((a, b) => b.credits - a.credits);
+        res.status(200).json({
+            array : array,
+            status : "success"
+        })
+    }catch(err){
+        if(err){
+            res.status(500).json({error : err});
+        }
+    }
 }
 
 function generateaccesstoken(id) {

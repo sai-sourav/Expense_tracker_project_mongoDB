@@ -4,7 +4,7 @@ const Op = Sequelize.Op;
 const Expense = require('../models/expenses');
 const Credit = require('../models/credits');
 
-exports.getpremiumexpenses = async (req, res, next) => {
+exports.getpremiumcredits = async (req, res, next) => {
     const userid = req.body.userid;
     var entity = req.query.entity;
     const type = req.query.type;
@@ -16,6 +16,7 @@ exports.getpremiumexpenses = async (req, res, next) => {
     } else if (type === "week" ){
         entity = entity.replace("W","");
         const array = entity.split('-');
+        console.log(array);
         const array1 = getDateRangeOfWeek(+array[1], +array[0]).split('to');
         DATE_START = new Date(array1[0]).setHours(0, 0, 0, 0);
         DATE_END = new Date(array1[1]).setHours(23, 59, 59, 0);
@@ -28,7 +29,7 @@ exports.getpremiumexpenses = async (req, res, next) => {
     }
     try{
         const user = await User.findByPk(userid);
-        const expenses = await user.getExpenses({
+        const credits = await user.getCredits( {
             where: {
                 createdAt: { 
                     [Op.gt]: DATE_START,
@@ -36,47 +37,22 @@ exports.getpremiumexpenses = async (req, res, next) => {
                 }
             }
         });
-        let totalexpenses = await Expense.sum('amount',{
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                },
-                userId : userid
-            }
-        });
-        let totalcredits = await Credit.sum('amount',{
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                },
-                userId : userid
-            }
-        });
-        if(totalcredits === null){
-            totalcredits = 0;
-        }
-        if(totalexpenses === null){
-            totalexpenses = 0;
-        }
         res.status(200).json({
-            ispremiumuser : user.ispremiumuser,
-            expenses : expenses,
-            totalexpenses : totalexpenses,
-            totalcredits : totalcredits,
-            status : "success"
+                    ispremiumuser : user.ispremiumuser,
+                    credits : credits,
+                    status : "success"
         })
-    } catch(err){
-        res.status(500).json({error : err});
+    }catch(err){
+        res.status(500).json({error : err.response});
     }
 }
 
-exports.getexpenses = async (req, res, next) => {
+
+exports.getcredits = async (req, res, next) => {
     const userid = req.body.userid;
     try{
         const user = await User.findByPk(userid);
-        const expenses = await user.getExpenses();
+        const credits = await user.getCredits();
         let totalexpenses = await Expense.sum('amount',{
             where: {
                 userId : userid
@@ -95,27 +71,28 @@ exports.getexpenses = async (req, res, next) => {
         }
         res.status(200).json({
             ispremiumuser : user.ispremiumuser,
-            expenses : expenses,
             totalexpenses : totalexpenses,
             totalcredits : totalcredits,
+            credits : credits,
             status : "success"
         })
-    } catch(err){
-        res.status(500).json({error : err});
+    }catch(err){
+        res.status(500).json({error : err.response});
     }
 }
 
-exports.postexpenses = async (req, res, next) => {
+exports.postcredit = async (req, res, next) => {
     const amount = req.body.amount;
     const Description = req.body.Description;
     const category = req.body.category;
     const userid = req.body.userid;
+    // console.log(userid);
     if((amount === "") || (Description === "") || (category === "")){
         return res.status(500).json({fields : "empty"});
     }
     try{
         const user = await User.findByPk(userid);
-        const response = await user.createExpense({
+        const response = await user.createCredit({
             amount : amount,
             Description : Description,
             category : category
@@ -131,15 +108,15 @@ exports.postexpenses = async (req, res, next) => {
     }
 }
 
-exports.deleteexpense = async (req, res, next) => {
+exports.deletecredit = async (req, res, next) => {
     const userid = req.body.userid;
-    const expenseid = req.body.expenseid;
+    const creditid = req.body.creditid;
     
     try{
         const user = await User.findByPk(userid);
-        let expense = await user.getExpenses({ where: { id : expenseid } });
-        expense = expense[0];
-        const response = await expense.destroy();
+        let credit = await user.getCredits({ where: { id : creditid } });
+        credit = credit[0];
+        const response = await credit.destroy();
         res.status(200).json({
             deleted : true
          });
@@ -148,7 +125,6 @@ exports.deleteexpense = async (req, res, next) => {
             error : err
         });
     }
-
 }
 
 function getDateRangeOfWeek(weekNo, year){

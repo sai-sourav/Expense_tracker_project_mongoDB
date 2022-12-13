@@ -1,7 +1,6 @@
 body {
     display: flex;
     align-items: center;
-    user-select: none;
     justify-content: center;
     font-family: "poppins", sans-serif;
     margin: 0;
@@ -30,7 +29,6 @@ fieldset h2{
 
 #premium {
     position: fixed;
-    visibility: visible;
     cursor: pointer;
     user-select: none;
     top: 80px;
@@ -78,14 +76,6 @@ fieldset h2{
     font-size: 20px;
 }
 
-#category1 {
-    width: 298px;
-    height: 35px;
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 20px;
-}
-
 option {
     font-family: inherit;
     font-size: 20px;
@@ -98,129 +88,22 @@ option {
     position: relative;
 }
 
-#creditform {
-    background-color: whitesmoke;
-    border-radius: 30px;
-    padding: 45px;
-    position: relative;
-}
 
-#expenseform.dark {
-    background-color: rgb(44, 44, 43);
-}
-
-form {
-    position: relative;
-}
-#addcreditbtn {
+.add-expense-btn {
     background-color: green;
     cursor: pointer;
     user-select: none;
     position: absolute;
     color: white;
     font-family: inherit;
-    top: 20px;
-    left: 5%;
+    top: 10px;
+    left: 10px;
     width: 150px;
     font-size: 15px;
     padding: 0.5rem;
     border-radius: 10px;
     border: none;
 }
-
-#addexpensebtn {
-    background-color: green;
-    cursor: pointer;
-    user-select: none;
-    position: absolute;
-    color: white;
-    font-family: inherit;
-    top: 20px;
-    left: 51%;
-    width: 150px;
-    font-size: 15px;
-    padding: 0.5rem;
-    border-radius: 10px;
-    border: none;
-}
-
-.credit-title {
-    position: fixed;
-    top: 34%;
-    left: 20%;
-    color: black;
-}
-   
-.debit-title {
-    position: fixed;
-    top: 34%;
-    right: 20%;
-    color: black;
-}
-
-.total-credits {
-    position: absolute;
-    top: 0px;
-    left: 18%;
-    font-size:x-large;
-    font: sans-serif;
-    width: auto;
-    height: auto;
-    background-color: #8985a8;
-    padding: 5px;
-    border-radius: 20px;
-  }
-  
-  .total-debits {
-    top: 0px;
-    position: absolute;
-    left: 35%;
-    font-size:x-large;
-    font: sans-serif;
-    width: auto;
-    height: auto;
-    background-color: #8985a8;
-    padding: 5px;
-    border-radius: 20px;
-  }
-  
-  .total-savings {
-    top: 0px;
-    position: absolute;
-    right: 13%;
-    font-size:x-large;
-    font: sans-serif;
-    width: auto;
-    height: auto;
-    background-color: #8985a8;
-    padding: 5px;
-    border-radius: 20px;
-  }
-
-.credit-container {
-    position: fixed;
-    background-color: whitesmoke;
-    border: 2px solid black;
-    top: 40%;
-    left: 1%;
-    width: 48.5%;
-    height: 56%;
-    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
-}
-
-  
-.debit-container {
-    position: fixed;
-    background-color: whitesmoke;
-    border: 2px solid black;
-    top: 40%;
-    right: 1%;
-    width: 48.5%;
-    height: 56%;
-    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
-}
-
-
 .saveexpense-btn {
     background-color: rebeccapurple;
     cursor: pointer;
@@ -272,10 +155,6 @@ label {
     font-family: inherit;
 }
 
-label.dark {
-    color: whitesmoke;
-}
-
 input {
     width: 290px;
     height: 30px;
@@ -284,22 +163,6 @@ input {
     font-size: 20px;
 }
 
-#formtitle.dark {
-    color: whitesmoke;
-}
-/* input, select, textarea{
-    color: #ff0000;
-}
-
-textarea:focus, input:focus {
-    color: #ff0000;
-} */
-
-#amount.dark {
-    border: 1px solid rgba(0,0,0,.5);
-    background: rgba(0,0,0,.25);
-    color: white;
-}
 
 #desc {
     width: 290px;
@@ -310,36 +173,10 @@ textarea:focus, input:focus {
     resize: none;
 }
 
-#desc1 {
-    width: 290px;
-    height: 100px;
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 20px;
-    resize: none;
-}
-
-#desc.dark {
-    border: 1px solid rgba(0,0,0,.5);
-    background: rgba(0,0,0,.25);
-    color: white;
-}
-
-#category.dark {
-    border: 1px solid rgba(0,0,0,.5);
-    background: rgba(0,0,0,.25);
-    color: white;
-}
-
-
-
 #networkerror {
     font-size: x-large;
 }
 
-#networkerror.dark {
-    color: white;
-}
 
 #noexpenses {
     position : relative;
@@ -359,12 +196,6 @@ textarea:focus, input:focus {
     /* left:  */
 }
 
-#exists1 {
-    font-family: inherit;
-    color: green;
-    /* left:  */
-}
-
 #container {
     background-color: whitesmoke;
     border-radius: 5px;
@@ -374,13 +205,9 @@ textarea:focus, input:focus {
     text-align: center;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 80%;
     height: 60%;
     top: 180px;
-}
-
-#container.dark {
-    background-color: rgba(30, 22, 22, 0.724);
 }
 
 #expenses-list {
@@ -391,14 +218,33 @@ textarea:focus, input:focus {
     text-align: center;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 70%;
+    width: 80%;
+    height: 60%;
     top: 250px;
 }
 
-#expenses-list.dark {
-    background-color: rgb(44, 44, 43);
-}
+.credit-container {
+    position: fixed;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    top: 40%;
+    left: 1%;
+    width: 48.5%;
+    height: 56%;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+  }
+  
+  .debit-container {
+    position: fixed;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    top: 40%;
+    right: 1%;
+    width: 48.5%;
+    height: 56%;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+  }
+
 
 .expense-item {
     background-color: rgb(119, 112, 144);
@@ -411,9 +257,6 @@ textarea:focus, input:focus {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 }
 
-.expense-item .dark {
-    background-color: rgb(50, 6, 6);
-}
 
 .delete-expense-button {
     background-color: rgb(200, 22, 51);
@@ -443,10 +286,9 @@ textarea:focus, input:focus {
 }
 
 .delete-credit-button:hover {
-    background-color: rgb(245, 10, 10);
-    color: white;
+background-color: rgb(245, 10, 10);
+color: white;
 }
-
 .showamount {
     font-family: inherit;
     font-size: 15px;
@@ -472,25 +314,93 @@ textarea:focus, input:focus {
 }
 
 .popup-container {
-    background: rgba(148, 194, 207, 0.5);
+    background: rgb(148, 194, 207);
     position: fixed;
     top:0;
     left: 0;
     bottom: 0;
     right: 0;
     display: none;
-    /* display: flex; */
     align-items: center;
     justify-content: center;
 }
-
+  
 .popup-container.active {
     display: flex;
 }
 
-.popup {
+#box {
+    background-color: black;
+    width: 50%;
+    height: 50%;
+}
+
+.popup{
+    position: fixed;
+    width: 10%;
+}
+
+/* .popup {
     position: relative;
-    width: 250px;
+    width: 20%;
+    background-color:  rgb(168, 139, 197);
+    height: 55%;
+    left: 0%;
+    top: 10%;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+} */
+
+.popup-tab {
+    overflow: hidden;
+    /* border: 1px solid #ccc; */
+    border: none;
+    /* border-radius: 10px; */
+    background-color: #f1f1f1;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 85%;
+}
+
+.popup-tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    border-bottom: 1px;
+    width: 50%;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.popup-tabcontent {
+    visibility: hidden;
+    height: 79%;
+    width: 91.5%;
+    /* left: 0%; */
+    right: 0%;
+    position: absolute;
+    top: 17%;
+    /* box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3); */
+    background-color:  rgb(68, 58, 213);
+    border: none;
+    /* background-color: whitesmoke; */
+}
+
+.popup-tabcontent.show {
+    visibility: visible;
+}
+
+.popup-tab button:hover {
+    background-color: rgb(54, 41, 141);
+}
+
+  
+.popup-tab button.active {
+    background-color: rgb(68, 58, 213);
 }
 
 .popup-container-premium {
@@ -523,28 +433,14 @@ textarea:focus, input:focus {
     color: red;
     font-family: inherit;
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 0px;
+    right: 0px;
+    width: 50px;
+    height: 68px;
     font-size: 30px;
     border: none;
 }
 
-#close1 {
-    background-color: whitesmoke;
-    cursor: pointer;
-    user-select: none;
-    color: red;
-    font-family: inherit;
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    font-size: 30px;
-    border: none;
-}
-
-#close.dark {
-    background-color: rgb(44, 44, 43);
-}
 
 #closepremium {
     background-color: whitesmoke;
@@ -628,21 +524,3 @@ textarea:focus, input:focus {
 #premium {
     animation: glowing 5000ms infinite;
 }
-
-.no-expenses {
-    position : relative;
-    text-align: center;
-    top: 100px;
-    font-size: x-large;
-    justify-content: center;
-  
-}
-  
-  
-.no-credits {
-    position : relative;
-    text-align: center;
-    top: 100px;
-    font-size: x-large;
-    justify-content: center;
-  }

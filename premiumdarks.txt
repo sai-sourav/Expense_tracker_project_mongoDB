@@ -1,0 +1,55 @@
+.global
+
+
+.tab.dark   #tab   #190e0ece
+
+.popup-tab.dark #popup-tab
+
+.credit-container.dark 
+
+.debit-container.dark
+
+.lifetime-container.dark  #lifetime
+
+.ranking-container.dark   #ranking
+
+.credit-title.dark
+
+.debit-title.dark
+
+.selection.dark
+
+.popup-leaderboard.dark  #popup-leaderboard
+
+#close.dark    close
+
+label.dark
+
+input.dark
+
+textarea.dark
+
+.heading.dark
+
+.column-heading ---
+
+.rank.dark
+
+.name.dark
+
+.credit.dark
+
+selection.dark
+
+#lifetime-credits-title.dark
+
+#lifetime-Debits-title.dark
+
+#lifetime-savings-title.dark
+
+.lifetime-values.dark 
+
+.no-expenses.dark
+
+.no-credits.dark
+

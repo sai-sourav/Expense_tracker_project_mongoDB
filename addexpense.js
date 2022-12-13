@@ -1,21 +1,18 @@
 const message = document.getElementById("exists");
-const creditmessage = document.getElementById("exists1");
 const container = document.getElementById('popup-container');
-const container1 = document.getElementById('popup-container1');
 const premiumcontainer = document.getElementById('popup-container-premium');
-const premiumaccountbtn = document.getElementById('premium');
-const proceedtopayment = document.getElementById('payment');
 const close = document.getElementById('close');
-const close1 = document.getElementById('close1');
 const closepremium = document.getElementById('closepremium');
 const addexpensebtn = document.getElementById('addexpensebtn');
-const addcreditbtn = document.getElementById('addcreditbtn');
-const saveexpensebtn = document.getElementById('saveexpense');
+const premiumaccountbtn = document.getElementById('premium');
+const proceedtopayment = document.getElementById('payment');
 const savecreditbtn = document.getElementById('savecredit');
+const saveexpensebtn = document.getElementById('saveexpense');
+const token = localStorage.getItem('token');
 const credits_list = document.getElementById('dailyleft');
 const debits_list = document.getElementById('dailyright');
 const list_container = document.getElementById('expenses-list');
-const token = localStorage.getItem('token');
+
 const headers = { 
     headers: {
         'Authorization' : token
@@ -26,14 +23,27 @@ let payment_success = "";
 
 const IP = "localhost";
 
+function openpopupTab(evt, tabname) {
+    let i, popuptabcontent, popuptablinks;
+    popuptabcontent = document.getElementsByClassName("popup-tabcontent");
+  
+    for (i = 0; i < popuptabcontent.length; i++) {
+      popuptabcontent[i].style.display = "none";
+    }
+  
+    popuptablinks = document.getElementsByClassName("popup-tablinks");
+  
+    for (i = 0; i < popuptablinks.length; i++) {
+      popuptablinks[i].className = popuptablinks[i].className.replace(" active", "");
+    }
+  
+    document.getElementById(tabname).style.display = "block";
+    evt.target.classList.add("active");
+}
+
 premiumaccountbtn.addEventListener("click", (e)=>{
     e.preventDefault();
     premiumcontainer.classList.add("active");
-});
-
-closepremium.addEventListener("click", (e)=> {
-    e.preventDefault();
-    premiumcontainer.classList.remove("active");
 });
 
 proceedtopayment.addEventListener("click", async (e)=> {
@@ -73,41 +83,58 @@ proceedtopayment.addEventListener("click", async (e)=> {
     });
 })
 
-close.addEventListener("click", (e)=> {
-    e.preventDefault();
-    container.classList.remove("active");
-});
 
-close1.addEventListener("click", (e)=> {
+
+
+// close.addEventListener("click", (e)=> {
+//     e.preventDefault();
+//     container.classList.remove("active");
+//     premiumcontainer.classList.remove("active");
+// });
+
+closepremium.addEventListener("click", (e)=> {
     e.preventDefault();
-    container1.classList.remove("active");
+    premiumcontainer.classList.remove("active");
 });
 
 addexpensebtn.addEventListener("click", (e) => {
     e.preventDefault();
     container.classList.add("active");
+    // defaultPopuptab("creditform","credittab");
+    // document.getElementById("creditdetails").classList.add("show");
+    // document.getElementById("credittab").classList.add("active");
 })
 
-addcreditbtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    container1.classList.add("active");
-})
+// function defaultPopuptab(conte,butt){
+//     let i, popuptabcontent, popuptablinks;
+//     popuptabcontent = document.getElementsByClassName("popup-tabcontent");
+  
+//     for (i = 0; i < popuptabcontent.length; i++) {
+//       popuptabcontent[i].style.display = "none";
+//     }
+  
+//     popuptablinks = document.getElementsByClassName("popup-tablinks");
+  
+//     for (i = 0; i < popuptablinks.length; i++) {
+//       popuptablinks[i].className = popuptablinks[i].className.replace(" active", "");
+//     }
+  
+//     document.getElementById(conte).style.display = "block";
+//     document.getElementById(butt).classList.add("active");
+// }
 
 document.addEventListener("DOMContentLoaded", getexpenses);
-document.addEventListener("DOMContentLoaded", getcredits);
+getcredits();
 
 async function getcredits(){
     try{
-      credits_list.innerHTML = "";
+      container.innerHTML = "";
       let response = await axios.get(`http://${IP}:4000/credits`, headers);
       response = response.data;
       showcredits(response.credits);
-      document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
-      document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
-      document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
     }catch(err){
       if(err !== null){
-          console.log(err.response);
+          console.log(err);
           const div = document.createElement('div');
           div.id = "networkerror";
           div.className = "no-credits global";
@@ -119,13 +146,23 @@ async function getcredits(){
   
 async function getexpenses(){
 try{
-    debits_list.innerHTML = "";
+    container.innerHTML = "";
     let response = await axios.get(`http://${IP}:4000/expenses`, headers);
     response = response.data;
     showexpenses(response.expenses);
-    document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
-    document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
-    document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+    if(type === "date"){
+        document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
+        document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
+        document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+    }else if(type === "week"){
+        document.getElementById('weeklycredits').innerText = `Total credit: $${response.totalcredits}`;
+        document.getElementById('weeklydebits').innerText = `Total debit: $${response.totalexpenses}`;
+        document.getElementById('weeklysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+    }else if(type === "month"){
+        document.getElementById('monthlycredits').innerText = `Total credit: $${response.totalcredits}`;
+        document.getElementById('monthlydebits').innerText = `Total debit: $${response.totalexpenses}`;
+        document.getElementById('monthlysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+    }
 }catch(err){
     if(err){
         console.log(err);
@@ -139,7 +176,7 @@ try{
 };
 
 function showexpenses(expenses){
-    debits_list.innerHTML = "";
+    container.innerHTML = "";
     if(expenses.length > 0){
         for(i=0; i< expenses.length ; i++){
             const expense = expenses[i];
@@ -164,7 +201,7 @@ function showexpenses(expenses){
   }
   
 function showcredits(credits){
-    credits_list.innerHTML = "";
+    container.innerHTML = "";
     if(credits.length > 0){
       for(i=0; i< credits.length ; i++){
           const credit = credits[i];
@@ -188,68 +225,65 @@ function showcredits(credits){
     }
 }
 
-saveexpensebtn.addEventListener("click", async (e)=> {
-    e.preventDefault();
-    const amount = document.getElementById('amount').value;
-    const desc = document.getElementById('desc').value;
-    const category = document.getElementById('category').value;
-    message.innerText = "";
-    try{
-        const response = await axios.post(`http://${IP}:4000/expenses`,{
-            amount : amount,
-            Description : desc,
-            category : category
-        },
-        headers);
-        document.getElementById('amount').value = "";
-        document.getElementById('desc').value = "";
-        document.getElementById('category').value = "";
-        message.innerText = "✔️ Expense added to your list";
-        setTimeout(()=>{
-            message.innerText = "";
-        },3000)
-        getexpenses();
-    }
-    catch(err){
-        if(err.response.data.fields === "empty"){
-            message.innerText = "❌ Please fill all the fields";
-        } else {
-            message.innerText = "❌ Something went wrong";
-        }
-    }
-});
-
-savecreditbtn.addEventListener("click", async (e)=> {
-    e.preventDefault();
+savecreditbtn.addEventListener("click", async (evt) => {
+    evt.preventDefault();
     creditmessage.innerText = "";
-    const creditamount = document.getElementById('amount1').value;
-    const creditdesc = document.getElementById('desc1').value;
-    const creditcategory = document.getElementById('category1').value;
+    const creditamount = document.getElementById('creditamount').value;
+    const creditdesc = document.getElementById('creditdesc').value;
+    const creditcategory = document.getElementById('creditcategory').value;
 
     if(creditamount === "" || creditdesc === "" || creditcategory === ""){
         creditmessage.innerText = "❌ Please fill all the fields";
     }
     else {
         try{
-            const result = await axios.post(`http://${IP}:4000/credits`,{
-                amount : creditamount,
-                Description : creditdesc,
-                category : creditcategory
-            },
-            headers);
-            creditmessage.innerText = "✔️ Credit added to your list";
-            setTimeout(()=>{
-                creditmessage.innerText = "";
-            },3000);
-            getcredits();
+        const result = await axios.post(`http://${IP}:4000/credits`,{
+            amount : creditamount,
+            Description : creditdesc,
+            category : creditcategory
+        },
+        headers);
+        creditmessage.innerText = "✔️ Credit added to your list";
+        setTimeout(()=>{
+            creditmessage.innerText = "";
+        },3000);
         }catch(err){
-            if(err){
-                console.log(err);
-            }
+        if(err){
+            console.log(err);
+        }
         }
     }
-
 });
+  
+saveexpensebtn.addEventListener("click", async (evt)=> {
+evt.preventDefault();
+const amount = document.getElementById('amount').value;
+const desc = document.getElementById('desc').value;
+const category = document.getElementById('category').value;
+debitmessage.innerText = "";
+try{
+    const response = await axios.post(`http://${IP}:4000/expenses`,{
+        amount : amount,
+        Description : desc,
+        category : category
+    },
+    headers);
+    document.getElementById('amount').value = "";
+    document.getElementById('desc').value = "";
+    document.getElementById('category').value = "";
+    debitmessage.innerText = "✔️ Expense added to your list";
+    setTimeout(()=>{
+        debitmessage.innerText = "";
+    },3000);
+}
+catch(err){
+    if(err.response.data.fields === "empty"){
+        debitmessage.innerText = "❌ Please fill all the fields";
+    } else {
+        debitmessage.innerText = "❌ Something went wrong";
+    }
+}
+})
 
 list_container.addEventListener("click", async (e)=>{
     e.preventDefault();
@@ -266,20 +300,5 @@ list_container.addEventListener("click", async (e)=>{
                 console.log(err.response);
             }
         }
-    }
-    if( e.target.className === "delete-credit-button"){
-        const creditid = e.target.parentNode.id;
-        try{
-            const response = await axios.post(`http://${IP}:4000/deletecredit`, {
-                creditid : creditid
-            },
-            headers)
-            getcredits();
-        } catch(err){
-            if(err){
-                console.log(err.response);
-            }
-        }
-
     }
 });

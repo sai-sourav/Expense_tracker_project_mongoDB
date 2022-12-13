@@ -1,0 +1,831 @@
+body {
+  font-family: Arial;
+  background-image: url('../images/signup/alexander-mils-lCPhGxs7pww-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  user-select: none;
+}
+
+.popup-tablinks.dark {
+  color: white;
+}
+
+
+#title {
+  border: none;
+  width: 20%;
+  position: fixed;
+  left: 45%;
+  top: 0%;
+}
+
+#title h1{
+  position: fixed;
+  top: 0%;
+  left: 34.5%;
+  font-family: 'Courier New', monospace;
+  color: whitesmoke;
+  font-size: 350%;
+}
+
+#title h3 {
+  position: fixed;
+  top: 10%;
+  left: 37%;
+  font-family: 'Courier New', monospace;
+  color: whitesmoke;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid rgb(68, 58, 213);
+  background-color: #f1f1f1;
+  position: fixed;
+  top: 18%;
+  left: 0%;
+  width: 100%;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.tab.dark {
+  background-color: rgb(86, 100, 180);
+}
+.tab.dark button:hover {
+  background-color: rgb(68, 58, 213);
+}
+
+
+.popup-tab {
+  overflow: hidden;
+  /* border: 1px solid #ccc; */
+  border: none;
+  /* border-radius: 10px; */
+  background-color: #f1f1f1;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 85%;
+}
+
+.popup-tab.dark {
+  background-color: #291111ce;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  width: 33.33%;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.popup-tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  border-bottom: 1px;
+  width: 50%;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+.popup-tab button:hover {
+  background-color: rgb(54, 41, 141);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color:  rgb(68, 58, 213);
+}
+
+.popup-tab button.active {
+  background-color: rgb(68, 58, 213);
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  height: 74%;
+  width: 100%;
+  left: 0%;
+  position: fixed;
+  top: 25%;
+  background-color:  rgb(68, 58, 213);
+  /* box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3); */
+  border-top: none;
+}
+.popup{
+  position: fixed;
+  width: 10%;
+}
+.popup-tabcontent {
+  display: none;
+  height: 79%;
+  width: 91.5%;
+  /* left: 0%; */
+  right: 0%;
+  position: absolute;
+  top: 17%;
+  /* box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3); */
+  background-color:  rgb(68, 58, 213);
+  border: none;
+  /* background-color: whitesmoke; */
+}
+
+
+
+.credit-container {
+  position: fixed;
+  background-color: whitesmoke;
+  border: 2px solid black;
+  top: 40%;
+  left: 1%;
+  width: 48.5%;
+  height: 56%;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.credit-container.dark {
+  background-color: #0e0909ce;
+  color: whitesmoke;
+}
+
+.debit-container {
+  position: fixed;
+  background-color: whitesmoke;
+  border: 2px solid black;
+  top: 40%;
+  right: 1%;
+  width: 48.5%;
+  height: 56%;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.debit-container.dark {
+  background-color:  #0e0909ce;
+  color: whitesmoke;
+}
+
+.lifetime-container {
+  position: absolute;
+  background-color: whitesmoke;
+  border: 2px solid black;
+  top: 5%;
+  left: 1%;
+  width: 48.5%;
+  height: 75%;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.lifetime-container.dark {
+  background-color:  #3e1e1ece;
+  color: whitesmoke;
+}
+
+.ranking-container {
+  position: absolute;
+  background-color: whitesmoke;
+  border: 2px solid black;
+  top: 5%;
+  right: 1%;
+  width: 48.5%;
+  height: 75%;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.ranking-container.dark {
+  background-color:  #3e1e1ece;
+  color: whitesmoke;
+}
+
+.credit-title {
+  position: fixed;
+  top: 34%;
+  left: 20%;
+  color: black;
+}
+
+.credit-title.dark {
+  color: whitesmoke;
+}
+
+.debit-title {
+  position: fixed;
+  top: 34%;
+  right: 20%;
+  color: black;
+}
+
+.debit-title.dark {
+  color: whitesmoke;
+}
+
+.expense-item {
+  background-color: rgb(119, 112, 144);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem;
+  position: relative;
+  height: 80px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.showamount {
+  font-family: inherit;
+  font-size: 15px;
+  left: 5%;
+  top: 5px;
+  position: absolute;
+}
+
+.showdesc {
+  font-family: inherit;
+  font-size: 15px;
+  top: 25px;
+  left: 5%;
+  position: absolute;
+}
+
+.showcat {
+  font-family: inherit;
+  font-size: 15px;
+  top: 45px;
+  left: 5%;
+  position: absolute;
+}
+
+.delete-expense-button {
+  background-color: rgb(200, 22, 51);
+  cursor: pointer;
+  color: white;
+  border:2px solid #56CCF2;
+  border-radius: 7px;
+  padding:6px 10px;
+  position: absolute;
+  right: 4%;
+}
+
+.delete-expense-button:hover {
+  background-color: rgb(245, 10, 10);
+  color: white;
+}
+
+.delete-credit-button {
+  background-color: rgb(200, 22, 51);
+  cursor: pointer;
+  color: white;
+  border:2px solid #56CCF2;
+  border-radius: 7px;
+  padding:6px 10px;
+  position: absolute;
+  right: 4%;
+}
+
+.delete-credit-button:hover {
+  background-color: rgb(245, 10, 10);
+  color: white;
+}
+
+.selection {
+  width: 20%;
+  height: 30px;
+  border-radius: 10px;
+  position: fixed;
+  top: 29%;
+  left: 47%;
+}
+
+.selection.dark {
+  border: 1px solid rgba(0,0,0,.5);
+  background: rgba(0,0,0,.25);
+  color: white;
+}
+
+.get-btn {
+  background-color: rebeccapurple;
+  cursor: pointer;
+  user-select: none;
+  position: fixed;
+  color: white;
+  font-family: inherit;
+  top: 29%;
+  left: 68%;
+  font-size: 100%;
+  padding: 0.45rem;
+  width: 130px;
+  border-radius: 10px;
+  border: none;
+}
+
+.get-btn:hover {
+  background-color: purple;
+  color:aqua;
+}
+
+.add-btn {
+  background-color: green;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  color: white;
+  font-family: inherit;
+  top: 20px;
+  left: 10px;
+  width: 180px;
+  font-size: 15px;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: none;
+}
+
+.add-btn:hover {
+  background-color: rgb(169, 175, 60);
+  color:whitesmoke
+}
+
+/* dark mode button */
+#darkmode {
+  position: fixed;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  right: 5%;
+  top: 7%;
+}
+
+#darkmode input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2196F3;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: rgba(0, 0, 0, 0.719);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/* add credit/ expenses */
+
+.popup-container {
+  background: rgba(148, 194, 207, 0.5);
+  position: fixed;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-container.active {
+  display: flex;
+}
+
+.popup-container-leaderboard{
+  background: rgba(148, 194, 207, 0.037);
+  position: fixed;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-container-leaderboard.active {
+  display: flex;
+}
+
+.popup {
+  position: relative;
+  width: 20%;
+  background-color:  rgb(168, 139, 197);
+  height: 55%;
+  left: 0%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.popup-leaderboard {
+  position: fixed;
+  width: 100%;
+  background-color:  whitesmoke;
+  height: 100%;
+  top: 18%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
+}
+
+.popup-leaderboard.dark {
+  background-color:  #282020;
+}
+
+#close {
+  background-color: whitesmoke;
+  cursor: pointer;
+  user-select: none;
+  color: red;
+  font-family: inherit;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 50px;
+  height: 68px;
+  font-size: 30px;
+  border: none;
+}
+
+#close.dark {
+  background-color: #190e0ece;
+}
+
+#Dashbord-btn {
+  background-color: rebeccapurple;
+  cursor: pointer;
+  user-select: none;
+  position: fixed;
+  color: white;
+  font-family: inherit;
+  left: 1%;
+  top: 10%;
+  font-size: 20px;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 10px;
+  border: none;
+}
+
+#Dashbord-btn:hover {
+  background-color: purple;
+  color:aqua;
+}
+
+.saveexpense-btn {
+  background-color: rebeccapurple;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  color: white;
+  font-family: inherit;
+  left: 25%;
+  font-size: 20px;
+  padding: 0.5rem;
+  width: 150px;
+  border-radius: 10px;
+  border: none;
+}
+
+.saveexpense-btn:hover {
+  background-color: purple;
+  color:aqua;
+}
+
+label {
+  font-family: inherit;
+}
+
+label.dark {
+  color: #190e0ece;
+}
+
+input {
+  width: 250px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+input.dark {
+  border: 1px solid rgba(0,0,0,.5);
+  background: rgba(0,0,0,.25);
+  color: white;
+}
+
+textarea {
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 20px;
+  resize: none;
+}
+
+textarea.dark {
+  border: 1px solid rgba(0,0,0,.5);
+  background: rgba(0,0,0,.25);
+  color: white;
+}
+
+option {
+  font-family: inherit;
+  font-size: 20px;
+}
+
+select {
+  width: 257px;
+  height: 35px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 20px;
+}
+
+select.dark {
+  border: 1px solid rgba(0,0,0,.5);
+  background: rgba(0,0,0,.25);
+  color: white;
+}
+
+#leaderboard-btn {
+  background-color: rebeccapurple;
+  cursor: pointer;
+  user-select: none;
+  position: fixed;
+  color: white;
+  font-family: inherit;
+  left: 1%;
+  top: 10%;
+  font-size: 20px;
+  padding: 0.5rem;
+  width: 150px;
+  border-radius: 10px;
+  border: none;
+}
+
+#leaderboard-btn:hover {
+  background-color: purple;
+  color:aqua;
+}
+
+.column-heading {
+  float: left;
+  width: 30%;
+  padding: 1px;
+}
+
+.heading {
+  position: relative;
+  left: 50px;
+  height: 2px;
+}
+
+.heading.dark {
+  color: whitesmoke;
+}
+
+.rank {
+  position: absolute;
+  width: 1%;
+  height: 3%;
+  background-color: #2196F3;
+}
+
+.rank.dark {
+  color: whitesmoke;
+}
+
+.name {
+  position: absolute;
+  left : 10%;
+  width: 50%;
+  height: 3%;
+}
+
+.name.dark {
+  color: whitesmoke;
+}
+
+.credit {
+  position: absolute;
+  left: 65vh;
+  width: 1%;
+  height: 3%;
+}
+
+.credit.dark {
+  color: whitesmoke;
+}
+
+.row {
+  left: 10%;
+  position: relative;
+  height: 2px;
+  margin-top: 2px;
+}
+
+#lifetime-credits {
+  position: absolute;
+  background-color: #0faec01f;
+  top: 2.5vh;
+  width: 200px;
+  height: 120px;
+  left: 40vh;
+  border-radius: 40px;
+}
+
+#lifetime-Debits {
+  position: absolute;
+  background-color:  #0faec01f;
+  width: 200px;
+  height: 120px;
+  top: 27.5vh;
+  left: 40vh;
+  border-radius: 40px;
+}
+
+#lifetime-savings {
+  position: absolute;
+  background-color:  #0faec01f;
+  width: 200px;
+  height: 120px;
+  top: 53.5vh;
+  left: 40vh;
+  border-radius: 40px;
+}
+
+
+#lifetime-credits-title {
+  position: absolute;
+  width: 100px;
+  height: 20px;
+  top: 17vh;
+  left: 47vh;
+  border-radius: 40px;
+}
+
+#lifetime-credits-title.dark {
+  color: whitesmoke;
+}
+
+#lifetime-Debits-title {
+  position: absolute;
+  width: 120px;
+  height: 20px;
+  top: 42vh;
+  left: 46vh;
+  border-radius: 40px;
+}
+
+#lifetime-Debits-title.dark {
+  color: whitesmoke;
+}
+
+#lifetime-savings-title {
+  position: absolute;
+  width: 500px;
+  height: 20px;
+  top: 68vh;
+  left: 46vh;
+  border-radius: 40px;
+}
+
+#lifetime-savings-title.dark {
+  color: whitesmoke;
+}
+
+.lifetime-values {
+  position: absolute;
+  top: 3vh;
+  left: 5vh;
+}
+
+.lifetime-values.dark {
+  color: whitesmoke;
+}
+
+.tablinks.dark {
+  color: whitesmoke;
+}
+
+.total-credits {
+  position: absolute;
+  left: 15%;
+  font-size:x-large;
+  font: sans-serif;
+  width: auto;
+  height: auto;
+  background-color: #8985a8;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.total-debits {
+  position: absolute;
+  left: 31%;
+  font-size:x-large;
+  font: sans-serif;
+  width: auto;
+  height: auto;
+  background-color: #8985a8;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.total-savings {
+  position: absolute;
+  right: 3%;
+  font-size:x-large;
+  font: sans-serif;
+  width: auto;
+  height: auto;
+  background-color: #8985a8;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+#downloadpdf {
+  position: fixed;
+  left: 16%;
+  top: 10%;
+  visibility: visible;
+}
+
+#downloadpdf.hide {
+  visibility: hidden;
+}
+
+.no-expenses {
+  position : relative;
+  text-align: center;
+  top: 100px;
+  font-size: x-large;
+  justify-content: center;
+
+}
+
+.no-expenses.dark {
+  color: whitesmoke;
+}
+
+.no-credits {
+  position : relative;
+  text-align: center;
+  top: 100px;
+  font-size: x-large;
+  justify-content: center;
+}
+
+.no-credits.dark {
+  color: whitesmoke;
+}
