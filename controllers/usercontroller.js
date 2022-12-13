@@ -7,6 +7,7 @@ const IP = "localhost";
 const {v4 : uuidv4} = require('uuid');
 const Expense = require('../models/expenses');
 const Credit = require('../models/credits');
+const AWS = require("aws-sdk");
 exports.usersignup = async (req, res, next) => {
     try{
         const name = req.body.name;
@@ -238,6 +239,84 @@ exports.getleaderboard = async (req,res,next) => {
             res.status(500).json({error : err});
         }
     }
+}
+
+exports.downloadExpenses = async (req, res, next) => {
+    const userid = req.body.userid;
+    try{
+        const user = await User.findByPk(userid);
+        const expenses = await user.getExpenses();
+        const stringifyexpenses = JSON.stringify(expenses);
+        const filename = `Expenses${userid}/${new Date()}.txt`;
+        const fileurl = await uploadTos3(stringifyexpenses, filename);
+        const reponse = await user.createFileurl({
+            fileurl : fileurl
+        })
+        res.status(200).json({
+            fileurl : fileurl,
+            status: "success"
+        })
+    }catch(err){
+        if(err){
+            res.status(500).json({
+                fileurl : "",
+                status: "failed",
+                error: err
+            })
+        }
+    }
+}
+
+exports.getdownloadhistory = async (req, res, next) => {
+    const userid = req.body.userid;
+    try{
+        const user = await User.findByPk(userid);
+        const result = await user.getFileurls();
+        res.status(200).json({
+            result : result,
+            status: "success"
+        });
+    }catch(err){
+        if(err){
+            res.status(500).json({
+                status: "failed",
+                error: err
+            })
+        }
+    }
+}
+
+function uploadTos3(data, filename) {
+
+	const BUCKET_NAME = process.env.BUCKET_NAME;
+	const IAM_USER_KEY = process.env.IAM_USER_KEY;   
+	const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
+
+	let s3bucket = new AWS.S3({
+		accessKeyId: IAM_USER_KEY,
+		secretAccessKey: IAM_USER_SECRET,
+		Bucket: BUCKET_NAME
+	});
+
+	// s3bucket.createBucket(() => {
+
+    var params = {
+        Bucket: BUCKET_NAME,
+        Key: filename,
+        Body: data,
+        ACL :'public-read'
+    }
+
+    return new Promise((resolve, reject) => {
+        s3bucket.upload(params, (err, s3response) => {
+            if(err){
+                reject(err);
+            }else {
+                resolve( s3response.Location);
+            }
+        });
+    });
+
 }
 
 function generateaccesstoken(id) {

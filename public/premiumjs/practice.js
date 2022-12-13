@@ -1,10 +1,13 @@
 const container = document.getElementById('popup-container');
 const lbcontainer = document.getElementById('popup-container-leaderboard-id');
+const downloadcontainer = document.getElementById('popup-container-downloads');
 const adddetails = document.getElementById('adddetails');
 const close = document.getElementById('close');
 const leaderboardbtn = document.getElementById("leaderboard-btn");
 const Dashbordbtn = document.getElementById('Dashbord-btn');
+const Dashbordbtn1 = document.getElementById('Dashbord-btn1');
 const downloadpdf = document.getElementById('downloadpdf');
+const showdownload = document.getElementById('showdownload');
 const savecreditbtn = document.getElementById('savecredit');
 const saveexpensebtn = document.getElementById('saveexpense');
 const creditmessage = document.getElementById("creditexists");
@@ -24,6 +27,7 @@ const label = document.getElementsByTagName('label');
 const input =document.getElementsByTagName('input');
 const textarea =  document.getElementsByTagName('textarea');
 const global = document.getElementsByClassName('global');
+const downloadslist = document.getElementById('downloads-list');
 
 const token = localStorage.getItem('token');
 const toggleswitch = document.getElementById("toggle");
@@ -72,6 +76,13 @@ Dashbordbtn.addEventListener("click", (e)=> {
   e.preventDefault();
   lbcontainer.classList.remove("active");
   downloadpdf.classList.remove("hide");
+  downloadcontainer.classList.remove("active");
+})
+
+Dashbordbtn1.addEventListener("click", (e)=> {
+  e.preventDefault();
+  downloadpdf.classList.remove("hide");
+  downloadcontainer.classList.remove("active");
 })
 // default tab and content
 document.getElementById("daily").style.display = "block";
@@ -418,4 +429,45 @@ async function deleteentity(e){
     }
 }
 };
-  
+
+downloadpdf.addEventListener("click", async (evt) => {
+  evt.preventDefault();
+  try{
+    const response = await axios.get(`http://${IP}:4000/download`, headers)
+    var a = document.createElement('a');
+    a.href = response.data.fileurl;
+    a.download = "myexpenses.txt";
+    a.click();
+  }catch(err){
+        if(err){
+            console.log(err);
+        }
+  }
+})
+
+showdownload.addEventListener("click", async (evt) => {
+  evt.preventDefault();
+  downloadslist.innerHTML = "";
+  downloadcontainer.classList.add("active");
+  downloadpdf.classList.add("hide");
+  try{
+    const response = await axios.get(`http://${IP}:4000/downloadhistory`, headers);
+    const list = response.data.result;
+    for(i=0; i<list.length ; i++){
+      const item = list[i];
+      const div = document.createElement('div');
+      div.id = item.id;
+      div.className = "row";
+      div.innerHTML = `<p class="slno">${i+1}</p>
+                       <p class="filelink"><a href="${item.fileurl}">Download file</a></p>
+                       <p class="date">${item.createdAt}</p>`
+      downloadslist.appendChild(div);
+      const br = document.createElement('br');
+      downloadslist.appendChild(br);
+    }
+  }catch(err){
+        if(err){
+            console.log(err);
+        }
+  }
+})

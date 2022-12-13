@@ -14,4 +14,8 @@ router.get('/lifetime', userauthentication.authenticate, usercontroller.getlifet
 
 router.get('/leaderboard', usercontroller.getleaderboard);
 
+router.get('/download', userauthentication.authenticate, usercontroller.downloadExpenses);
+
+router.get('/downloadhistory', userauthentication.authenticate, usercontroller.getdownloadhistory);
+
 module.exports = router;

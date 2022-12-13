@@ -17,7 +17,8 @@
             <span class="slider round"></span>
         </label>
         <button id="leaderboard-btn">Leaderboard</button>
-        <button id="downloadpdf" class="add-btn">Download PDF</button>
+        <button id="downloadpdf" class="add-btn">Download Expenses</button>
+        <button id="showdownload" class="add-btn">Download history</button>
         <div id="tab" class="tab global">
             <button id="dailytab" class="tablinks global" onclick="openTab(event, 'daily')">Daily</button>
             <button id="weeklytab" class="tablinks global" onclick="openTab(event, 'weekly')">Weekly</button>
@@ -196,7 +197,44 @@
                 </div>
                 
             </div>
-        </div>   
+        </div>
+        <div class="popup-container-leaderboard" id="popup-container-downloads">
+            <div id="popup-downloads" class="popup-leaderboard global">
+                <button id="Dashbord-btn1"> << Back to Dashbord</button>
+                <div class="heading global">
+                    <div class="column-heading global" id="slno">
+                      <h2>SL.NO</h2>
+                    </div>
+                    <div class="column-heading global" id="name">
+                      <h2>Fileurl</h2>
+                    </div>
+                    <div class="column-heading global" id="credit">
+                      <h2>Date</h2>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div id="downloads-list">
+                    <!-- <div id = "1" class="row">
+                        <p class="slno">1</p>
+                        <p class="filelink">Download link</p>
+                        <p class="date">$1000000000000</p>
+                    </div> -->
+                    <!-- <br>
+                    <div id = "2" class="row">
+                        <p class="rank">2</p>
+                        <p class="name">PRATHYUSHA</p>
+                        <p class="credit">$989</p>
+                    </div>
+                    <br>
+                    <div id = "3" class="row">
+                        <p class="rank">3</p>
+                        <p class="name">Tvnk murthy</p>
+                        <p class="credit">$970</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>    
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> 
     <script src="../premiumjs/practice.js" defer></script>

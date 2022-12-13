@@ -481,6 +481,7 @@ input:checked + .slider:before {
 
 .popup-leaderboard.dark {
   background-color:  #282020;
+  color: whitesmoke;
 }
 
 #close {
@@ -519,6 +520,27 @@ input:checked + .slider:before {
 }
 
 #Dashbord-btn:hover {
+  background-color: purple;
+  color:aqua;
+}
+
+#Dashbord-btn1 {
+  background-color: rebeccapurple;
+  cursor: pointer;
+  user-select: none;
+  position: fixed;
+  color: white;
+  font-family: inherit;
+  left: 1%;
+  top: 10%;
+  font-size: 20px;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 10px;
+  border: none;
+}
+
+#Dashbord-btn1:hover {
   background-color: purple;
   color:aqua;
 }
@@ -828,4 +850,30 @@ select.dark {
 
 .no-credits.dark {
   color: whitesmoke;
+}
+
+#downloads-list{
+  position:  absolute;
+  left: 50px;
+}
+
+.slno {
+  position: absolute;
+  width: 1%;
+  height: 3%;
+  left: 30px;
+}
+
+.filelink {
+  position: absolute;
+  left : 69vh;
+  width: 30vh;
+  height: 3%;
+}
+
+.date {
+  position: absolute;
+  left: 130vh;
+  width: 50vh;
+  height: 3%;
 }
