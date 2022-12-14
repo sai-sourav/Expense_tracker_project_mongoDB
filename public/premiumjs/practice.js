@@ -22,6 +22,14 @@ const credits_list_weekly = document.getElementById('weeklyleft');
 const debits_list_weekly = document.getElementById('weeklyright');
 const credits_list_monthly = document.getElementById('monthlyleft');
 const debits_list_monthly = document.getElementById('monthlyright');
+
+const creditpagesdaily = document.getElementById('creditpagesdaily');
+const debitpagesdaily = document.getElementById('debitpagesdaily');
+const creditpagesweekly = document.getElementById('creditpagesweekly');
+const debitpagesweekly = document.getElementById('debitpagesweekly');
+const creditpagesmonthly = document.getElementById('creditpagesmonthly');
+const debitpagesmonthly = document.getElementById('debitpagesmonthly');
+
 const leaderboard_list = document.getElementById('leaderboard-list');
 const label = document.getElementsByTagName('label');
 const input =document.getElementsByTagName('input');
@@ -144,6 +152,12 @@ function defaults(){
 }
 
 function cleardisplaydata(){
+  creditpagesdaily.innerHTML = "";
+  debitpagesdaily.innerHTML = "";
+  creditpagesweekly.innerHTML = "";
+  debitpagesweekly.innerHTML = "";
+  creditpagesmonthly.innerHTML = "";
+  debitpagesmonthly.innerHTML = "";
   document.getElementById('dailycredits').innerText = `Total credit: $0`;
   document.getElementById('dailydebits').innerText = `Total debit: $0`;
   document.getElementById('dailysavings').innerText = `Total Savings: $0`;
@@ -186,7 +200,7 @@ leaderboardbtn.addEventListener("click", async (evt) => {
   downloadpdf.classList.add("hide");
   try{
     const lifetime = await axios.get(`http://${IP}:4000/lifetime`,headers);
-    const response = await axios.get(`http://${IP}:4000/leaderboard`);
+    const response = await axios.get(`http://${IP}:4000/leaderboard`, headers);
     const leaderboardarray = response.data.array;
     for(i=0;i<leaderboardarray.length;i++){
       const arrayitem = leaderboardarray[i];
@@ -273,8 +287,9 @@ getdatebtn.addEventListener("click", (e)=> {
   e.preventDefault();
   const datevalue = document.getElementById('date').value;
   if (datevalue !== ""){
-    getcredits(datevalue, "date", credits_list_daily);
-    getexpenses(datevalue, "date",debits_list_daily);
+    let page = 1
+    getcredits(datevalue, "date", credits_list_daily, page, creditpagesdaily);
+    getexpenses(datevalue, "date",debits_list_daily, page, debitpagesdaily);
   }
 })
 
@@ -282,8 +297,9 @@ getweekbtn.addEventListener("click", (e)=> {
   e.preventDefault();
   const weekvalue = document.getElementById('week').value;
   if (weekvalue !== ""){
-    getcredits(weekvalue, "week", credits_list_weekly);
-    getexpenses(weekvalue, "week", debits_list_weekly);
+    let page = 1
+    getcredits(weekvalue, "week", credits_list_weekly, page, creditpagesweekly);
+    getexpenses(weekvalue, "week", debits_list_weekly, page, debitpagesweekly);
   }
 })
 
@@ -291,17 +307,19 @@ getmonthbtn.addEventListener("click", (e)=> {
   e.preventDefault();
   const monthvalue = document.getElementById('month').value;
   if (monthvalue !== ""){
-    getcredits(monthvalue, "month", credits_list_monthly);
-    getexpenses(monthvalue, "month", debits_list_monthly);
+    let page = 1
+    getcredits(monthvalue, "month", credits_list_monthly, page, creditpagesmonthly);
+    getexpenses(monthvalue, "month", debits_list_monthly, page, debitpagesmonthly);
   }
 })
 
-async function getcredits(entity,type,container){
+async function getcredits(entity,type,container,page, pagecontainer){
   try{
     container.innerHTML = "";
-    let response = await axios.get(`http://${IP}:4000/premium/credits?entity=${entity}&type=${type}`, headers);
+    let response = await axios.get(`http://${IP}:4000/premium/credits?entity=${entity}&type=${type}&page=${page}`, headers);
     response = response.data;
     showcredits(response.credits, container);
+    showcreditpages(entity,type,container, response, pagecontainer);
   }catch(err){
     if(err !== null){
         console.log(err);
@@ -314,12 +332,13 @@ async function getcredits(entity,type,container){
   }
 }
 
-async function getexpenses(entity,type,container){
+async function getexpenses(entity,type,container,page, pagecontainer){
   try{
       container.innerHTML = "";
-      let response = await axios.get(`http://${IP}:4000/premium/expenses?entity=${entity}&type=${type}`, headers);
+      let response = await axios.get(`http://${IP}:4000/premium/expenses?entity=${entity}&type=${type}&page=${page}`, headers);
       response = response.data;
       showexpenses(response.expenses, container);
+      showdebitpages(entity,type,container,response, pagecontainer);
       if(type === "date"){
         document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
         document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
@@ -344,6 +363,78 @@ async function getexpenses(entity,type,container){
       }
   }
 };
+
+function showcreditpages(
+  entity,
+  type,
+  container,
+  {
+      currentpage,
+      hasnextpage,
+      haspreviouspage,
+      nextpage,
+      previouspage
+  },
+  pagecontainer
+){
+  const pages = pagecontainer;
+  pages.innerHTML = ""
+  
+  if(haspreviouspage){
+      const prevbtn = document.createElement('button');
+      prevbtn.innerHTML = previouspage;
+      prevbtn.addEventListener('click', ()=>getcredits(entity,type,container,previouspage,pagecontainer));
+      pages.appendChild(prevbtn);
+  }
+  const currbtn = document.createElement('button');
+  currbtn.innerHTML = currentpage;
+  currbtn.classList.add('active');
+  currbtn.addEventListener('click', ()=>getcredits(entity,type,container,currentpage,pagecontainer));
+  pages.appendChild(currbtn);
+
+  if(hasnextpage){
+      const nextbtn = document.createElement('button');
+      nextbtn.innerHTML = nextpage;
+      nextbtn.addEventListener('click', ()=>getcredits(entity,type,container,nextpage,pagecontainer));
+      pages.appendChild(nextbtn);
+  }
+}
+
+function showdebitpages(
+  entity,
+  type,
+  container,
+  {
+      currentpage,
+      hasnextpage,
+      haspreviouspage,
+      nextpage,
+      previouspage
+  },
+  pagecontainer
+){
+  const pages = pagecontainer;
+  pages.innerHTML = ""
+  
+  if(haspreviouspage){
+      const prevbtn = document.createElement('button');
+      prevbtn.innerHTML = previouspage;
+      prevbtn.addEventListener('click', ()=>getexpenses(entity,type,container,previouspage,pagecontainer));
+      pages.appendChild(prevbtn);
+  }
+  const currbtn = document.createElement('button');
+  currbtn.innerHTML = currentpage;
+  currbtn.classList.add('active');
+  currbtn.addEventListener('click', ()=>getexpenses(entity,type,container,currentpage,pagecontainer));
+  pages.appendChild(currbtn);
+
+  if(hasnextpage){
+      const nextbtn = document.createElement('button');
+      nextbtn.innerHTML = nextpage;
+      nextbtn.addEventListener('click', ()=>getexpenses(entity,type,container,nextpage,pagecontainer));
+      pages.appendChild(nextbtn);
+  }
+}
 
 function showexpenses(expenses,container){
   container.innerHTML = "";

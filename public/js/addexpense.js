@@ -93,15 +93,29 @@ addcreditbtn.addEventListener("click", (e) => {
     container1.classList.add("active");
 })
 
-document.addEventListener("DOMContentLoaded", getexpenses);
-document.addEventListener("DOMContentLoaded", getcredits);
+document.addEventListener("DOMContentLoaded", async ()=>{
+    const page = 1;
+    let response = await axios.get(`http://${IP}:4000/credits?page=${page}`, headers);
+    response = response.data;
+    showcredits(response.credits);
+    showcreditpages(response);
+});
+document.addEventListener("DOMContentLoaded", async () => {
+    const page = 1;
+    let response = await axios.get(`http://${IP}:4000/expenses?page=${page}`, headers);
+    response = response.data;
+    showexpenses(response.expenses);
+    showdebitpages(response);
 
-async function getcredits(){
+});
+
+async function getcredits(page){
     try{
       credits_list.innerHTML = "";
-      let response = await axios.get(`http://${IP}:4000/credits`, headers);
+      let response = await axios.get(`http://${IP}:4000/credits?page=${page}`, headers);
       response = response.data;
       showcredits(response.credits);
+      showcreditpages(response);
       document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
       document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
       document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
@@ -117,12 +131,13 @@ async function getcredits(){
     }
 }
   
-async function getexpenses(){
+async function getexpenses(page){
 try{
     debits_list.innerHTML = "";
-    let response = await axios.get(`http://${IP}:4000/expenses`, headers);
+    let response = await axios.get(`http://${IP}:4000/expenses?page=${page}`, headers);
     response = response.data;
     showexpenses(response.expenses);
+    showdebitpages(response);
     document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
     document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
     document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
@@ -188,6 +203,76 @@ function showcredits(credits){
     }
 }
 
+function showcreditpages(
+    {
+        currentpage,
+        hasnextpage,
+        haspreviouspage,
+        nextpage,
+        previouspage
+    }
+){
+    const pages = document.getElementById('creditpages');
+    pages.innerHTML = ""
+    
+    if(haspreviouspage){
+        const prevbtn = document.createElement('button');
+        prevbtn.innerHTML = previouspage;
+        // prevbtn.classList.add('btn');
+        prevbtn.addEventListener('click', ()=>getcredits(previouspage));
+        pages.appendChild(prevbtn);
+    }
+    const currbtn = document.createElement('button');
+    currbtn.innerHTML = currentpage;
+    currbtn.classList.add('active');
+    // currbtn.classList.add('btn');
+    currbtn.addEventListener('click', ()=>getcredits(currentpage));
+    pages.appendChild(currbtn);
+
+    if(hasnextpage){
+        const nextbtn = document.createElement('button');
+        nextbtn.innerHTML = nextpage;
+        // nextbtn.classList.add('btn');
+        nextbtn.addEventListener('click', ()=>getcredits(nextpage));
+        pages.appendChild(nextbtn);
+    }
+}
+
+function showdebitpages(
+    {
+        currentpage,
+        hasnextpage,
+        haspreviouspage,
+        nextpage,
+        previouspage
+    }
+){
+    const pages = document.getElementById('debitpages');
+    pages.innerHTML = ""
+    
+    if(haspreviouspage){
+        const prevbtn = document.createElement('button');
+        prevbtn.innerHTML = previouspage;
+        prevbtn.classList.add('btn');
+        prevbtn.addEventListener('click', ()=>getexpenses(previouspage));
+        pages.appendChild(prevbtn);
+    }
+    const currbtn = document.createElement('button');
+    currbtn.innerHTML = currentpage;
+    currbtn.classList.add('active');
+    currbtn.classList.add('btn');
+    currbtn.addEventListener('click', ()=>getexpenses(currentpage));
+    pages.appendChild(currbtn);
+
+    if(hasnextpage){
+        const nextbtn = document.createElement('button');
+        nextbtn.innerHTML = nextpage;
+        nextbtn.classList.add('btn');
+        nextbtn.addEventListener('click', ()=>getexpenses(nextpage));
+        pages.appendChild(nextbtn);
+    }
+}
+
 saveexpensebtn.addEventListener("click", async (e)=> {
     e.preventDefault();
     const amount = document.getElementById('amount').value;
@@ -208,7 +293,7 @@ saveexpensebtn.addEventListener("click", async (e)=> {
         setTimeout(()=>{
             message.innerText = "";
         },3000)
-        getexpenses();
+        getexpenses(1);
     }
     catch(err){
         if(err.response.data.fields === "empty"){
@@ -237,11 +322,14 @@ savecreditbtn.addEventListener("click", async (e)=> {
                 category : creditcategory
             },
             headers);
+            document.getElementById('amount1').value = "";
+            document.getElementById('desc1').value = "";
+            document.getElementById('category1').value = "";
             creditmessage.innerText = "✔️ Credit added to your list";
             setTimeout(()=>{
                 creditmessage.innerText = "";
             },3000);
-            getcredits();
+            getcredits(1);
         }catch(err){
             if(err){
                 console.log(err);
@@ -260,7 +348,7 @@ list_container.addEventListener("click", async (e)=>{
                 expenseid : expenseid
             },
             headers)
-            getexpenses();
+            getexpenses(1);
         } catch(err){
             if(err){
                 console.log(err.response);
@@ -274,7 +362,7 @@ list_container.addEventListener("click", async (e)=>{
                 creditid : creditid
             },
             headers)
-            getcredits();
+            getcredits(1);
         } catch(err){
             if(err){
                 console.log(err.response);

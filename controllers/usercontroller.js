@@ -183,6 +183,10 @@ exports.resetpassword = async (req, res, next) => {
 exports.getlifetimedata = async (req,res,next) => {
     const userid = req.body.userid;
     try{
+        const user = await User.findByPk(userid);
+        if(user.ispremiumuser === false){
+            return res.status(401).json({error : err.response});
+        }
         let totalexpenses = await Expense.sum('amount',{
             where: {
                 userId : userid
@@ -212,6 +216,11 @@ exports.getlifetimedata = async (req,res,next) => {
 exports.getleaderboard = async (req,res,next) => {
     const array = [];
     try{
+        const userid = req.body.userid;
+        const user = await User.findByPk(userid);
+        if(user.ispremiumuser === false){
+            return res.status(401).json({error : err.response});
+        }
         const users = await User.findAll();
         for(i=0; i<users.length; i++){
             const user = users[i];
@@ -245,6 +254,9 @@ exports.downloadExpenses = async (req, res, next) => {
     const userid = req.body.userid;
     try{
         const user = await User.findByPk(userid);
+        if(user.ispremiumuser === false){
+            return res.status(401).json({error : err.response});
+        }
         const expenses = await user.getExpenses();
         const stringifyexpenses = JSON.stringify(expenses);
         const filename = `Expenses${userid}/${new Date()}.txt`;
@@ -271,6 +283,9 @@ exports.getdownloadhistory = async (req, res, next) => {
     const userid = req.body.userid;
     try{
         const user = await User.findByPk(userid);
+        if(user.ispremiumuser === false){
+            return res.status(401).json({error : err.response});
+        }
         const result = await user.getFileurls();
         res.status(200).json({
             result : result,

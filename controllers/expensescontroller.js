@@ -3,11 +3,13 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const Expense = require('../models/expenses');
 const Credit = require('../models/credits');
+const Items_Per_page = 3;
 
 exports.getpremiumexpenses = async (req, res, next) => {
     const userid = req.body.userid;
     var entity = req.query.entity;
     const type = req.query.type;
+    const page = parseInt(req.query.page);
     let DATE_START;
     let DATE_END;
     if (type === "date"){
@@ -28,13 +30,26 @@ exports.getpremiumexpenses = async (req, res, next) => {
     }
     try{
         const user = await User.findByPk(userid);
-        const expenses = await user.getExpenses({
+        if(user.ispremiumuser === false){
+            return res.status(401).json({error : err.response});
+        }
+        const allexpenses = await user.getExpenses({
             where: {
                 createdAt: { 
                     [Op.gt]: DATE_START,
                     [Op.lt]: DATE_END
                 }
             }
+        });
+        let count = allexpenses.length;
+        const expenses = await user.getExpenses({
+            where: {
+                createdAt: { 
+                    [Op.gt]: DATE_START,
+                    [Op.lt]: DATE_END
+                }
+            },
+            offset: (page - 1) * Items_Per_page, limit: Items_Per_page
         });
         let totalexpenses = await Expense.sum('amount',{
             where: {
@@ -63,6 +78,12 @@ exports.getpremiumexpenses = async (req, res, next) => {
         res.status(200).json({
             ispremiumuser : user.ispremiumuser,
             expenses : expenses,
+            currentpage : page,
+            hasnextpage : Items_Per_page*page < count,
+            haspreviouspage : page > 1,
+            nextpage : page + 1,
+            previouspage : page - 1,
+            lastpage : Math.ceil(count / Items_Per_page),
             totalexpenses : totalexpenses,
             totalcredits : totalcredits,
             status : "success"
@@ -74,9 +95,12 @@ exports.getpremiumexpenses = async (req, res, next) => {
 
 exports.getexpenses = async (req, res, next) => {
     const userid = req.body.userid;
+    const page = parseInt(req.query.page);
     try{
         const user = await User.findByPk(userid);
-        const expenses = await user.getExpenses();
+        let allExpenses = await user.getExpenses();
+        let count = allExpenses.length;
+        const expenses = await user.getExpenses({ offset: (page - 1) * Items_Per_page, limit: Items_Per_page });
         let totalexpenses = await Expense.sum('amount',{
             where: {
                 userId : userid
@@ -98,6 +122,12 @@ exports.getexpenses = async (req, res, next) => {
             expenses : expenses,
             totalexpenses : totalexpenses,
             totalcredits : totalcredits,
+            currentpage : page,
+            hasnextpage : Items_Per_page*page < count,
+            haspreviouspage : page > 1,
+            nextpage : page + 1,
+            previouspage : page - 1,
+            lastpage : Math.ceil(count / Items_Per_page),
             status : "success"
         })
     } catch(err){

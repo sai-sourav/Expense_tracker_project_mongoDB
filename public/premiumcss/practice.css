@@ -156,7 +156,7 @@ body {
   top: 40%;
   left: 1%;
   width: 48.5%;
-  height: 56%;
+  height: 50%;
   box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
 }
 
@@ -172,13 +172,72 @@ body {
   top: 40%;
   right: 1%;
   width: 48.5%;
-  height: 56%;
+  height: 50%;
   box-shadow: 2px 2px 10px rgba( 0, 0, 0, 0.3);
 }
 
 .debit-container.dark {
   background-color:  #0e0909ce;
   color: whitesmoke;
+}
+
+
+.debitpagenation {
+  position: absolute;
+  top: 67vh;
+  text-align: center;
+  right: 45vh;
+  
+}
+
+.creditpagenation {
+  position: absolute;
+  top: 67vh;
+  text-align: center;
+  left: 45vh;
+}
+
+.debitpagenation button {
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+  background-color: #549ad3;
+  padding: 0.5rem;
+  border: 1px solid black;
+  margin: 0 0.5rem;
+}
+
+.creditpagenation button {
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+  background-color: #549ad3;
+  padding: 0.5rem;
+  border: 1px solid black;
+  margin: 0 0.5rem;
+}
+
+.creditpagenation button:hover,
+.creditpagenation button:active,
+.creditpagenation button.active{
+  background: green;
+  color: white;
+}
+
+.debitpagenation button:hover,
+.debitpagenation button:active,
+.debitpagenation button.active{
+  background: green;
+  color: white;
+}
+
+
+
+#premium:hover {
+  color: rgb(10, 46, 49);
+  background-color: rgba(159, 107, 107, 0.947);
 }
 
 .lifetime-container {
