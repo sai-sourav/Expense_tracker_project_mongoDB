@@ -45,6 +45,16 @@ const headers = {
     }
 }
 
+document.getElementById("dailytab").addEventListener("click", (event) => {
+  return openTab(event, 'daily');
+} );
+document.getElementById("weeklytab").addEventListener("click", (event) => {
+  return openTab(event, 'weekly');
+} );
+document.getElementById("monthlytab").addEventListener("click", (event) => {
+  return openTab(event, 'monthly');
+} );
+
 document.addEventListener("DOMContentLoaded", cleardisplaydata);
 defaults();
 
@@ -77,6 +87,14 @@ adddetails.addEventListener("click", (e) => {
 close.addEventListener("click", (e)=> {
   e.preventDefault();
   container.classList.remove("active");
+});
+
+document.getElementById('credittab').addEventListener(("click"), (event)=> {
+  return openpopupTab(event, 'creditform');
+});
+
+document.getElementById('expensetab').addEventListener(("click"), (event)=> {
+  return openpopupTab(event, 'debitform');
 });
 
 

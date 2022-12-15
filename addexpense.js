@@ -12,6 +12,7 @@ const token = localStorage.getItem('token');
 const credits_list = document.getElementById('dailyleft');
 const debits_list = document.getElementById('dailyright');
 const list_container = document.getElementById('expenses-list');
+document.cookie = "witcher=Geralt; SameSite=None; Secure"
 
 const headers = { 
     headers: {

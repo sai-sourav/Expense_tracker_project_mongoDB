@@ -21,7 +21,7 @@ savepswd.addEventListener("click", async (e)=> {
     else{
         try{
             const result = await axios.post(`http://${IP}:4000/password/resetpassword`, {
-                uid : urlParams.get('id'),
+                uid : urlParams.get('uniqueid'),
                 newpswd : newpswd
             });
             resetpassword.innerHTML = "";

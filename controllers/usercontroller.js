@@ -125,7 +125,7 @@ exports.forgotpassword = async (req, res, next) => {
             })
             res.status(200).json({
                 found: "true",
-                link: `http://${IP}:4000/html/forgotpassword.html?id=${newId}`,
+                link: `http://${IP}:4000/html/forgotpassword.html?uniqueid=${newId}`,
                 status: "success"
             })
         }

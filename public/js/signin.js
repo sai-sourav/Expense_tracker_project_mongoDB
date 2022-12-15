@@ -38,6 +38,7 @@ signinbtn.addEventListener("click", async (e) => {
         }
         
     }catch(err){
+        console.log(err);
         if(err.response.status !== 500){
             if(err.response.data.email === false){ 
                 message.innerText = "❌ Wrong Email entered";
