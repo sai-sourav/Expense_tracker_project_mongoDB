@@ -7,7 +7,7 @@ const forgotok = document.getElementById('forgot-ok');
 const forgotfieldset = document.getElementById('forgotpassword');
 const forgotmessage = document.getElementById("forgotmessage");
 
-const IP = "localhost";
+const IP = "18.141.13.248";
 
 forgotten.addEventListener("click", (e)=> {
     e.preventDefault();

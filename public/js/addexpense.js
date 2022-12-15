@@ -24,7 +24,7 @@ const headers = {
 
 let payment_success = "";
 
-const IP = "localhost";
+const IP = "18.141.13.248";
 
 premiumaccountbtn.addEventListener("click", (e)=>{
     e.preventDefault();
