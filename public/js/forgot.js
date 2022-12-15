@@ -31,7 +31,7 @@ savepswd.addEventListener("click", async (e)=> {
             resetpassword.appendChild(message);
             const btn = document.createElement('a');
             btn.id = "reset-signin"
-            btn.href = "http://localhost:4000/html/signin.html";
+            btn.href = `http://${IP}:4000/html/signin.html`;
             btn.innerText = "Signin"
             resetpassword.appendChild(btn);
     
