@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Expense = require('../models/expenses');
+const Debit = require('../models/expenses');
 const Credit = require('../models/credits');
 const Items_Per_page = 3;
 
@@ -95,20 +95,30 @@ exports.getexpenses = async (req, res, next) => {
     const userid = req.body.userid;
     const page = parseInt(req.query.page);
     try{
-        const user = await User.findByPk(userid);
-        let allExpenses = await user.getExpenses();
-        let count = allExpenses.length;
-        const expenses = await user.getExpenses({ offset: (page - 1) * Items_Per_page, limit: Items_Per_page });
-        let totalexpenses = await Expense.sum('amount',{
-            where: {
-                userId : userid
-            }
-        });
-        let totalcredits = await Credit.sum('amount',{
-            where: {
-                userId : userid
-            }
-        });
+        const user = await User.findById(userid).populate('debits.debitid');
+        let count = user.debits.length;
+        let creditscount = user.credits.length;
+        const expenses = await Debit.find({userId : user._id}).limit(Items_Per_page).skip((page - 1) * Items_Per_page).exec();
+        let totalcredits;
+        if(creditscount !== 0){
+            totalcredits = await Credit.aggregate([
+                { $match: { userId : user._id } },
+                { $group: { _id: null, total: { $sum: "$amount" } } }
+            ]);
+            totalcredits = totalcredits[0].total;
+        }else{
+            totalcredits = 0; 
+        }
+        let totalexpenses;
+        if(count !== 0){
+            totalexpenses = await Debit.aggregate([
+                { $match: { userId : user._id } },
+                { $group: { _id: null, total: { $sum: "$amount" } } }
+            ]);
+            totalexpenses = totalexpenses[0].total;
+        }else{
+            totalexpenses = 0;
+        }
         if(totalcredits === null){
             totalcredits = 0;
         }
@@ -142,12 +152,19 @@ exports.postexpenses = async (req, res, next) => {
         return res.status(500).json({fields : "empty"});
     }
     try{
-        const user = await User.findByPk(userid);
-        const response = await user.createExpense({
+        const user = await User.findById(userid);
+        const debit = new Debit({
             amount : amount,
-            Description : Description,
-            category : category
-        });
+            description : Description,
+            category : category,
+            createdAt: new Date(),
+            userId: user._id
+        })
+        const response = await debit.save();
+        user.debits.push({
+            debitid: response._id
+        })
+        await user.save();
         res.status(201).json({
            created : true
         });
@@ -164,10 +181,14 @@ exports.deleteexpense = async (req, res, next) => {
     const expenseid = req.body.expenseid;
     
     try{
-        const user = await User.findByPk(userid);
-        let expense = await user.getExpenses({ where: { id : expenseid } });
-        expense = expense[0];
-        const response = await expense.destroy();
+        const user = await User.findById(userid);
+        const debits = user.debits;
+        const updateddebits = debits.filter(op => {
+            return op.debitid === expenseid
+        })
+        user.debits = updateddebits;
+        await user.save();
+        await Debit.findByIdAndDelete(expenseid);
         res.status(200).json({
             deleted : true
          });

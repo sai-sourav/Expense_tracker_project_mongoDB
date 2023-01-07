@@ -95,19 +95,34 @@ addcreditbtn.addEventListener("click", (e) => {
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     const page = 1;
-    let response = await axios.get(`http://${IP}:4000/credits?page=${page}`, headers);
-    response = response.data;
-    showcredits(response.credits);
-    showcreditpages(response);
+    try{
+        let response = await axios.get(`http://${IP}:4000/credits?page=${page}`, headers);
+        response = response.data;
+        showcredits(response.credits);
+        showcreditpages(response);
+        filltotals(response);
+    }catch(err){
+        console.log(err);
+    }
 });
 document.addEventListener("DOMContentLoaded", async () => {
     const page = 1;
-    let response = await axios.get(`http://${IP}:4000/expenses?page=${page}`, headers);
-    response = response.data;
-    showexpenses(response.expenses);
-    showdebitpages(response);
-
+    try{
+        let response = await axios.get(`http://${IP}:4000/expenses?page=${page}`, headers);
+        response = response.data;
+        showexpenses(response.expenses);
+        showdebitpages(response);
+        filltotals(response);
+    }catch(err){
+        console.log(err);
+    }
 });
+
+function filltotals(response){
+    document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
+    document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
+    document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+}
 
 async function getcredits(page){
     try{
@@ -116,9 +131,7 @@ async function getcredits(page){
       response = response.data;
       showcredits(response.credits);
       showcreditpages(response);
-      document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
-      document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
-      document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+      filltotals(response);
     }catch(err){
       if(err !== null){
           console.log(err.response);
@@ -138,9 +151,7 @@ try{
     response = response.data;
     showexpenses(response.expenses);
     showdebitpages(response);
-    document.getElementById('dailycredits').innerText = `Total credit: $${response.totalcredits}`;
-    document.getElementById('dailydebits').innerText = `Total debit: $${response.totalexpenses}`;
-    document.getElementById('dailysavings').innerText = `Total Savings: $${response.totalcredits-response.totalexpenses}`;
+    filltotals(response);
 }catch(err){
     if(err){
         console.log(err);
@@ -159,10 +170,10 @@ function showexpenses(expenses){
         for(i=0; i< expenses.length ; i++){
             const expense = expenses[i];
             const div = document.createElement('div');
-            div.id = `${expense.id}`;
+            div.id = `${expense._id}`;
             div.className = "expense-item";
             div.innerHTML = `<h3 class="showamount">Amount spent: $${expense.amount}</h3>
-                            <h3 class="showdesc">Description: ${expense.Description}</h3>
+                            <h3 class="showdesc">Description: ${expense.description}</h3>
                             <h3 class="showcat">Category: ${expense.category}</h3>
                             <button class="delete-expense-button" type='button'>Delete Expense</button>`;
             debits_list.appendChild(div);
@@ -184,10 +195,10 @@ function showcredits(credits){
       for(i=0; i< credits.length ; i++){
           const credit = credits[i];
           const div = document.createElement('div');
-          div.id = `${credit.id}`;
+          div.id = `${credit._id}`;
           div.className = "expense-item";
           div.innerHTML = `<h3 class="showamount">Amount spent: $${credit.amount}</h3>
-                          <h3 class="showdesc">Description: ${credit.Description}</h3>
+                          <h3 class="showdesc">Description: ${credit.description}</h3>
                           <h3 class="showcat">Category: ${credit.category}</h3>
                           <button class="delete-credit-button" type='button'>Delete credit</button>`;
            credits_list.appendChild(div);

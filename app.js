@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const bodyparser = require('body-parser');
+const mongoose = require('mongoose');
 const Cors = require('cors');
 const path = require('path');
 
@@ -58,6 +59,11 @@ app.use((req, res, next) => {
 
 // User.hasMany(Order);
 // Order.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.tdeqggk.mongodb.net/expense_tracker?retryWrites=true&w=majority`)
+  .then(result => {
+    console.log("connected to MongoDB!😎😎");
+    app.listen(4000);
+  }).catch(err => {
+    console.log(err);
+})
 
-
-app.listen(process.env.PORT || 4000);

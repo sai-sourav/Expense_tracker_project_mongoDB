@@ -16,19 +16,25 @@ exports.usersignup = async (req, res, next) => {
         if((name === "") || (emailid === "") || (pswd === "")){
             return res.status(500).json({fields : "empty"});
         }
-        let search = await User.findAll({
-            where: {
-                emailid: emailid
+        let search = await User.find(
+            {
+                email: emailid
             }
-        });
+        );
         search = search[0];
         if(!search){
             bcrypt.hash(pswd, saltRounds, async(err,hash) => {
-                const response = await User.create({
+                const user = new User({ 
                     name : name,
-                    emailid : emailid,
-                    password : hash
-                });
+                    email : emailid,
+                    password : hash,
+                    forgotpswdrequests: [],
+                    credits: [],
+                    debits: [],
+                    orders: [],
+                    fileurl: [] 
+                })
+                const response = await user.save();
                 res.status(201).json({
                     found : false,
                     created : true
@@ -59,10 +65,8 @@ exports.usersignin = async (req, res, next) => {
         if((emailid === "") || (pswd === "")){
             return res.status(500).json({fields : "empty"});
         }
-        let search = await User.findAll({
-            where: {
-                emailid: emailid
-            }
+        let search = await User.find({
+            email: emailid
         });
         if (search.length > 0){
             search = search[0];
@@ -112,17 +116,26 @@ exports.usersignin = async (req, res, next) => {
 exports.forgotpassword = async (req, res, next) => {
     const emailid = req.params.emailid;
     try{
-        let user = await User.findAll( {where : {emailid : emailid} });
+        let user = await User.find( {email : emailid} );
         user = user[0];
         if(!user){
             return res.status(404).json({ found: "false",status: "success"});
         }
         else {
             const newId = uuidv4();
-            const result = await user.createForgotPasswordRequest({
+            const forgotpswd = new Forgotpswd({
                 id: newId,
-                isactive: true
+                isactive: true,
+                createdAt: new Date(),
+                userid: user._id
             })
+            const result = await forgotpswd.save();
+            const requestarray = user.forgotpswdrequests;
+            requestarray.push({
+                requestid: result._id
+            })
+            user.forgotpswdrequests = requestarray;
+            const result1 = await user.save();
             res.status(200).json({
                 found: "true",
                 link: `http://${IP}:4000/html/forgotpassword.html?uniqueid=${newId}`,
@@ -144,23 +157,25 @@ exports.forgotpassword = async (req, res, next) => {
 exports.resetpassword = async (req, res, next) => {
     const newpswd = req.body.newpswd;
     const uid = req.body.uid;
-    const getforgotpswd = await Forgotpswd.findByPk(uid);
-    const userid = getforgotpswd.userId;
+    let getforgotpswd = await Forgotpswd.find({id: uid});
+    getforgotpswd = getforgotpswd[0];
+    const userid = getforgotpswd.userid;
     if (getforgotpswd.isactive === true){
         try{
-            const user = await User.findByPk(userid);
+            const user = await User.findById(userid);
             bcrypt.hash(newpswd, saltRounds, async(err,hash) => {
                 if (err){
                     return res.status(500).json({
                         error : err
                     });
                 }
-                const response = await user.update({
-                    password : hash
-                });
-                await getforgotpswd.update({
-                    isactive : false
-                });
+
+                user.password = hash;
+                await user.save();
+
+                getforgotpswd.isactive = false;
+                await getforgotpswd.save();
+                
                 res.status(201).json({
                     updated : true
                 });

@@ -5,7 +5,7 @@ const Order = require('../models/premiumorder');
 
 exports.purchasepremium = async (req, res, next) => {
     const userid = req.body.userid;
-    const user = await User.findByPk(userid);
+    const user = await User.findById(userid);
     try {
         var rzp = new Razorpay({
             key_id: process.env.KEY_ID,
@@ -18,10 +18,20 @@ exports.purchasepremium = async (req, res, next) => {
                 console.log(err);
                 return res.status(403).json({ message: 'Something went wrong', error: err})
             }
-            user.createOrder({ orderid: order.id, status: 'PENDING'}).then(() => {
-                return res.status(201).json({ order, key_id : rzp.key_id});
-
-            }).catch(err => {
+            const order1 = new Order({
+                orderid: order.id,
+                status: 'PENDING',
+                createdAt: new Date(),
+                userId: user._id
+            })
+            return order1.save()
+            .then((result) => {
+                user.orders.push({orderid: result._id});
+                return user.save()
+            }).then((result) => {
+                res.status(201).json({ order, key_id : rzp.key_id});
+            })
+            .catch(err => {
                 throw new Error(err)
             })
         })
@@ -34,16 +44,21 @@ exports.purchasepremium = async (req, res, next) => {
 exports.updateTransactionStatus = async (req, res, next ) => {
     try {
         const userid = req.body.userid;
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid);
         const { payment_id, order_id} = req.body;
-        Order.findOne({where : {orderid : order_id}}).then(order => {
-            order.update({ paymentid: payment_id, status: 'SUCCESSFUL'}).then(() => {
-                user.update({ispremiumuser: true})
-                return res.status(202).json({success: true, message: "Transaction Successful"});
-            }).catch((err)=> {
-                throw new Error(err);
-            })
-        }).catch(err => {
+        Order.find({orderid: order_id})
+        .then(order => {
+            order = order[0];
+            order.paymentid = payment_id;
+            order.status = 'SUCCESSFUL';
+            return order.save();
+        }).then(result => {
+            user.ispremiumuser = true;
+            return user.save();
+        }).then(result => {
+            res.status(202).json({success: true, message: "Transaction Successful"});
+        })
+        .catch(err => {
             throw new Error(err);
         })
     } catch (err) {
