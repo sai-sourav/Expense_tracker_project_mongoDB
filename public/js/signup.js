@@ -3,7 +3,7 @@ const message = document.getElementById("exists");
 const container = document.getElementById('container');
 const ok = document.getElementById('ok');
 
-const IP = "18.141.13.248";
+const IP = "localhost";
 
 ok.addEventListener("click", (e)=> {
     e.preventDefault();

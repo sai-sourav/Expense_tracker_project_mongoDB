@@ -1,6 +1,4 @@
 const User = require('../models/user');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 const Expense = require('../models/expenses');
 const Credit = require('../models/credits');
 const Items_Per_page = 3;

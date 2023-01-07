@@ -2,7 +2,7 @@ const savepswd = document.getElementById('savepassword');
 const resetpassword = document.getElementById('resetpswd');
 const message = document.getElementById("message");
 
-const IP = "18.141.13.248";
+const IP = "localhost";
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);

@@ -8,17 +8,12 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "helmet": "^6.0.1",
-    "https": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.10.0",
-    "mysql2": "^2.3.3",
+    "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.20",
     "razorpay": "^2.8.4",
-    "sequelize": "^6.26.0",
     "uuid": "^9.0.0"
   },
-  "name": "expensetracker_project",
+  "name": "expensetracker_project_mongodb",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -27,13 +22,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sai-sourav/Expense_tracker_project.git"
+    "url": "git+https://github.com/sai-sourav/Expense_tracker_project_mongoDB.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sai-sourav/Expense_tracker_project/issues"
+    "url": "https://github.com/sai-sourav/Expense_tracker_project_mongoDB.git/issues"
   },
-  "homepage": "https://github.com/sai-sourav/Expense_tracker_project#readme",
+  "homepage": "https://github.com/sai-sourav/Expense_tracker_project_mongoDB#readme",
   "description": ""
 }
