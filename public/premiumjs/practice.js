@@ -218,6 +218,9 @@ leaderboardbtn.addEventListener("click", async (evt) => {
   downloadpdf.classList.add("hide");
   try{
     const lifetime = await axios.get(`http://${IP}:4000/lifetime`,headers);
+    document.getElementById('totallifecredit').innerText = `$${lifetime.data.lifetimecredits}`;
+    document.getElementById('totallifedebit').innerText = `$${lifetime.data.lifetimeexpenses}`;
+    document.getElementById('totallifesaving').innerText = `$${lifetime.data.lifetimecredits-lifetime.data.lifetimeexpenses}`;
     const response = await axios.get(`http://${IP}:4000/leaderboard`, headers);
     const leaderboardarray = response.data.array;
     for(i=0;i<leaderboardarray.length;i++){
@@ -231,9 +234,7 @@ leaderboardbtn.addEventListener("click", async (evt) => {
       const br = document.createElement('br');
       leaderboard_list.appendChild(br);
     }
-    document.getElementById('totallifecredit').innerText = `$${lifetime.data.lifetimecredits}`;
-    document.getElementById('totallifedebit').innerText = `$${lifetime.data.lifetimeexpenses}`;
-    document.getElementById('totallifesaving').innerText = `$${lifetime.data.lifetimecredits-lifetime.data.lifetimeexpenses}`;
+    
   }catch(err){
     if(err){
       console.log(err);
@@ -460,10 +461,10 @@ function showexpenses(expenses,container){
       for(i=0; i< expenses.length ; i++){
           const expense = expenses[i];
           const div = document.createElement('div');
-          div.id = `${expense.id}`;
+          div.id = `${expense._id}`;
           div.className = "expense-item";
           div.innerHTML = `<h3 class="showamount">Amount spent: $${expense.amount}</h3>
-                          <h3 class="showdesc">Description: ${expense.Description}</h3>
+                          <h3 class="showdesc">Description: ${expense.description}</h3>
                           <h3 class="showcat">Category: ${expense.category}</h3>
                           <button class="delete-expense-button" type='button'>Delete Expense</button>`;
           container.appendChild(div);
@@ -485,10 +486,10 @@ function showcredits(credits,container){
     for(i=0; i< credits.length ; i++){
         const credit = credits[i];
         const div = document.createElement('div');
-        div.id = `${credit.id}`;
+        div.id = `${credit._id}`;
         div.className = "expense-item";
         div.innerHTML = `<h3 class="showamount">Amount spent: $${credit.amount}</h3>
-                        <h3 class="showdesc">Description: ${credit.Description}</h3>
+                        <h3 class="showdesc">Description: ${credit.description}</h3>
                         <h3 class="showcat">Category: ${credit.category}</h3>
                         <button class="delete-credit-button" type='button'>Delete credit</button>`;
         container.appendChild(div);
@@ -565,11 +566,11 @@ showdownload.addEventListener("click", async (evt) => {
     for(i=0; i<list.length ; i++){
       const item = list[i];
       const div = document.createElement('div');
-      div.id = item.id;
+      div.id = item.fileurlid._id;
       div.className = "row";
       div.innerHTML = `<p class="slno">${i+1}</p>
-                       <p class="filelink"><a href="${item.fileurl}">Download file</a></p>
-                       <p class="date">${item.createdAt}</p>`
+                       <p class="filelink"><a href="${item.fileurlid.fileurl}">Download file</a></p>
+                       <p class="date">${item.fileurlid.createdAt}</p>`
       downloadslist.appendChild(div);
       const br = document.createElement('br');
       downloadslist.appendChild(br);

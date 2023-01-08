@@ -27,52 +27,42 @@ exports.getpremiumexpenses = async (req, res, next) => {
         DATE_END = new Date(enddate).setHours(23, 59, 59, 0);
     }
     try{
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid);
         if(user.ispremiumuser === false){
             return res.status(401).json({error : err.response});
         }
-        const allexpenses = await user.getExpenses({
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                }
-            }
-        });
-        let count = allexpenses.length;
-        const expenses = await user.getExpenses({
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                }
+        const allexpenses = await Debit.find({
+            createdAt: {
+                $gte: DATE_START,
+                $lte: DATE_END
             },
-            offset: (page - 1) * Items_Per_page, limit: Items_Per_page
-        });
-        let totalexpenses = await Expense.sum('amount',{
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                },
-                userId : userid
-            }
-        });
-        let totalcredits = await Credit.sum('amount',{
-            where: {
-                createdAt: { 
-                    [Op.gt]: DATE_START,
-                    [Op.lt]: DATE_END
-                },
-                userId : userid
-            }
-        });
-        if(totalcredits === null){
-            totalcredits = 0;
-        }
-        if(totalexpenses === null){
-            totalexpenses = 0;
-        }
+            userId: user._id
+        })
+        let count = allexpenses.length;
+        const allcredits = await Credit.find({
+            createdAt: {
+                $gte: DATE_START,
+                $lte: DATE_END
+            },
+            userId: user._id
+        })
+        let creditcount = allcredits.length;
+        const expenses = await Debit.find({
+            createdAt: {
+                $gte: DATE_START,
+                $lte: DATE_END
+            },
+            userId: user._id
+        }).limit(Items_Per_page).skip((page - 1) * Items_Per_page).exec();
+
+        let totalexpenses = 0;
+        allexpenses.map(expense => {
+            totalexpenses = totalexpenses + expense.amount;
+        })
+        let totalcredits = 0;
+        allcredits.map(credit => {
+             totalcredits = totalcredits + credit.amount;
+        })
         res.status(200).json({
             ispremiumuser : user.ispremiumuser,
             expenses : expenses,
@@ -203,7 +193,6 @@ exports.deleteexpense = async (req, res, next) => {
 function getDateRangeOfWeek(weekNo, year){
     var d1 = new Date();
     d1.setFullYear(year);
-    weekNo = weekNo + 1;
     numOfdaysPastSinceLastMonday = eval(d1.getDay()- 1);
     d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
     var weekNoToday = d1.getWeek();

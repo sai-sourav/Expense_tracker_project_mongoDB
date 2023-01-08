@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const IP = "localhost";
 const {v4 : uuidv4} = require('uuid');
-const Expense = require('../models/expenses');
+const Debit = require('../models/expenses');
 const Credit = require('../models/credits');
 const AWS = require("aws-sdk");
+const Fileurl = require('../models/fileurl');
 exports.usersignup = async (req, res, next) => {
     try{
         const name = req.body.name;
@@ -198,20 +199,32 @@ exports.resetpassword = async (req, res, next) => {
 exports.getlifetimedata = async (req,res,next) => {
     const userid = req.body.userid;
     try{
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid);
         if(user.ispremiumuser === false){
             return res.status(401).json({error : err.response});
         }
-        let totalexpenses = await Expense.sum('amount',{
-            where: {
-                userId : userid
-            }
-        });
-        let totalcredits = await Credit.sum('amount',{
-            where: {
-                userId : userid
-            }
-        });
+        let count = user.credits.length;
+        let debitscount = user.debits.length;
+        let totalcredits;
+        if(count !== 0){
+            totalcredits = await Credit.aggregate([
+                { $match: { userId : user._id } },
+                { $group: { _id: null, total: { $sum: "$amount" } } }
+            ]);
+            totalcredits = totalcredits[0].total;
+        }else{
+            totalcredits = 0; 
+        }
+        let totalexpenses;
+        if(debitscount !== 0){
+            totalexpenses = await Debit.aggregate([
+                { $match: { userId : user._id } },
+                { $group: { _id: null, total: { $sum: "$amount" } } }
+            ]);
+            totalexpenses = totalexpenses[0].total;
+        }else{
+            totalexpenses = 0;
+        }
         if(totalcredits === null){
             totalcredits = 0;
         }
@@ -232,20 +245,23 @@ exports.getleaderboard = async (req,res,next) => {
     const array = [];
     try{
         const userid = req.body.userid;
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid);
         if(user.ispremiumuser === false){
             return res.status(401).json({error : err.response});
         }
-        const users = await User.findAll();
+        const users = await User.find();
         for(i=0; i<users.length; i++){
             const user = users[i];
-            let totalcredits = await Credit.sum('amount',{
-                where: {
-                    userId : user.id
-                }
-            });
-            if(totalcredits === null){
-                totalcredits = 0;
+            let count = user.credits.length;
+            let totalcredits;
+            if(count !== 0){
+                totalcredits = await Credit.aggregate([
+                    { $match: { userId : user._id } },
+                    { $group: { _id: null, total: { $sum: "$amount" } } }
+                ]);
+                totalcredits = totalcredits[0].total;
+            }else{
+                totalcredits = 0; 
             }
             const obj = {
                 name : user.name,
@@ -268,17 +284,23 @@ exports.getleaderboard = async (req,res,next) => {
 exports.downloadExpenses = async (req, res, next) => {
     const userid = req.body.userid;
     try{
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid).populate('debits.debitid');
         if(user.ispremiumuser === false){
             return res.status(401).json({error : err.response});
         }
-        const expenses = await user.getExpenses();
+        const expenses = user.debits;
+        // console.log(expenses);
         const stringifyexpenses = JSON.stringify(expenses);
         const filename = `Expenses${userid}/${new Date()}.txt`;
         const fileurl = await uploadTos3(stringifyexpenses, filename);
-        const reponse = await user.createFileurl({
-            fileurl : fileurl
+        const fileurl1 = new Fileurl({
+            fileurl : fileurl,
+            createdAt : new Date(),
+            userId: user._id
         })
+        const result = await fileurl1.save();
+        user.fileurl.push({fileurlid: result._id});
+        await user.save();
         res.status(200).json({
             fileurl : fileurl,
             status: "success"
@@ -297,11 +319,11 @@ exports.downloadExpenses = async (req, res, next) => {
 exports.getdownloadhistory = async (req, res, next) => {
     const userid = req.body.userid;
     try{
-        const user = await User.findByPk(userid);
+        const user = await User.findById(userid).populate('fileurl.fileurlid');
         if(user.ispremiumuser === false){
             return res.status(401).json({error : err.response});
         }
-        const result = await user.getFileurls();
+        const result = user.fileurl;
         res.status(200).json({
             result : result,
             status: "success"
